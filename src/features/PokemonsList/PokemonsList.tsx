@@ -5,11 +5,35 @@ import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
 interface Props {
   defaultSearch: DefaultResponse | undefined;
   pokemon: PokemonExtended | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  error: BasicError | undefined;
 }
 
 class PokemonsList extends Component<Props> {
   render() {
-    const { defaultSearch, pokemon } = this.props;
+    const { defaultSearch, pokemon, isError, isLoading, error } = this.props;
+
+    if (isError && error) {
+      const { message, status } = error;
+
+      if (status === 404) {
+        return <div>Wrong pokemon name</div>;
+      }
+
+      return (
+        <div>
+          Something bad happen. Try to reload page
+          <div className="flex flex-col">
+            <span>Error status : {status}</span>
+            <span>Error message : {message}</span>
+          </div>
+        </div>
+      );
+    }
+    if (isLoading) {
+      return <div>Loading content</div>;
+    }
 
     return (
       <table className="w-full border border-black">
