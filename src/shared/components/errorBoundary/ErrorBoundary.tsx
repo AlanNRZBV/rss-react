@@ -1,5 +1,5 @@
-import type { PropsWithChildren } from 'react';
 import * as React from 'react';
+import { type PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
   message: string;
@@ -14,8 +14,18 @@ class ErrorBoundary extends React.Component<Props, State> {
     hasError: false,
   };
 
+  handleClick = () => {
+    this.setState({ hasError: true });
+  };
+
   static getDerivedStateFromError(): State {
-    return { hasError: true };
+    return {
+      hasError: true,
+    };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error(error, errorInfo);
   }
 
   render() {
@@ -23,7 +33,17 @@ class ErrorBoundary extends React.Component<Props, State> {
       return <div>{this.props.message}</div>;
     }
 
-    return this.props.children;
+    return (
+      <div className="flex flex-col">
+        {this.props.children}
+        <button
+          className="mt-2 self-end rounded-md border border-black bg-red-200 px-4 py-2"
+          onClick={this.handleClick}
+        >
+          Trigger Error
+        </button>
+      </div>
+    );
   }
 }
 export default ErrorBoundary;
