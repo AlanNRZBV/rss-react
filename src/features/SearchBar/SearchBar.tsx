@@ -1,4 +1,23 @@
-import { type ChangeEvent, Component } from 'react';
+import { type ChangeEvent, Component, type FormEvent } from 'react';
+import axios from 'axios';
+import { baseApi } from '../../shared/api/instance.ts';
+
+type PokemonType = {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+};
+
+type Pokemon = {
+  id: number;
+  height: number;
+  name: string;
+  order: number;
+  weight: number;
+  types: PokemonType[];
+};
 
 class SearchBar extends Component {
   state = {
@@ -11,9 +30,23 @@ class SearchBar extends Component {
     });
   };
 
-  handleSubmit = () => {};
+  handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const res = await baseApi.get<Pokemon>(`/${this.state.search}`);
+      console.log(res);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 400) {
+        throw new Error('');
+      } else if (axios.isAxiosError(e) && e.code === 'ERR_NETWORK') {
+        console.log('server error', e.message);
+      }
+    }
+  };
 
   render() {
+    const isEmpty = this.state.search === '';
     return (
       <form
         onSubmit={this.handleSubmit}
@@ -34,7 +67,11 @@ class SearchBar extends Component {
             />
           </div>
         </div>
-        <button type="submit" className="border border-gray-400">
+        <button
+          type="submit"
+          disabled={isEmpty}
+          className="border border-gray-400"
+        >
           submit
         </button>
       </form>
