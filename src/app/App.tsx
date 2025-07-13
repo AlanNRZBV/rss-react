@@ -1,6 +1,6 @@
 import { type ChangeEvent, Component, type FormEvent } from 'react';
 import SearchBar from '../features/SearchBar/SearchBar.tsx';
-import ItemList from '../features/ItemList/ItemList.tsx';
+import PokemonsList from '../features/PokemonsList/PokemonsList.tsx';
 import ErrorBoundary from '../shared/components/errorBoundary/ErrorBoundary.tsx';
 import { errorMessages } from '../shared/lib/errorMessages.ts';
 import { baseApi } from '../shared/api/instance.ts';
@@ -9,33 +9,40 @@ import axios from 'axios';
 class App extends Component<object, AppState> {
   state: AppState = {
     search: '',
-    defaultSearch: {
-      count: 0,
-      next: '',
-      previous: null,
-      results: [],
-    },
-    pokemon: {
-      id: 0,
-      height: 0,
-      name: '',
-      order: 0,
-      weight: 0,
-    },
+    defaultSearch: undefined,
+    pokemon: undefined,
   };
 
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      search: e.target.value,
-    });
+    this.setState((prevState) => ({ ...prevState, search: e.target.value }));
   };
+
+  async componentDidMount() {
+    try {
+      const savedData = localStorage.getItem('searchData');
+      if (!savedData) {
+        const res = await baseApi.get<DefaultResponse>(`/?limit=20&offset=0`);
+        this.setState((prevState) => ({
+          ...prevState,
+          defaultSearch: res.data,
+        }));
+        return;
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response?.status === 400) {
+        throw new Error('');
+      } else if (axios.isAxiosError(e) && e.code === 'ERR_NETWORK') {
+        console.log('server error', e.message);
+      }
+    }
+  }
 
   handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
     try {
       const res = await baseApi.get<PokemonExtended>(`/${this.state.search}`);
-      console.log(res);
+      this.setState((prevState) => ({ ...prevState, pokemon: res.data }));
     } catch (e) {
       if (axios.isAxiosError(e) && e.response?.status === 400) {
         throw new Error('');
@@ -58,7 +65,10 @@ class App extends Component<object, AppState> {
             />
           </ErrorBoundary>
           <ErrorBoundary message={itemListErrorMsg}>
-            <ItemList />
+            <PokemonsList
+              defaultSearch={this.state.defaultSearch}
+              pokemon={this.state.pokemon}
+            />
           </ErrorBoundary>
         </div>
       </div>

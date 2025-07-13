@@ -1,10 +1,10 @@
 declare type AppState = {
   search: string;
-  defaultSearch: defaultResponse;
-  pokemon: PokemonExtended;
+  defaultSearch: DefaultResponse | undefined;
+  pokemon: PokemonExtended | undefined;
 };
 
-declare type defaultResponse = {
+declare type DefaultResponse = {
   count: number;
   next: string;
   previous: string | null;
