@@ -25,6 +25,7 @@ class App extends Component<object, AppState> {
         this.setState((prevState) => ({
           ...prevState,
           defaultSearch: res.data,
+          pokemon: undefined,
         }));
         return;
       }
@@ -42,7 +43,11 @@ class App extends Component<object, AppState> {
     e.stopPropagation();
     try {
       const res = await baseApi.get<PokemonExtended>(`/${this.state.search}`);
-      this.setState((prevState) => ({ ...prevState, pokemon: res.data }));
+      this.setState((prevState) => ({
+        ...prevState,
+        pokemon: res.data,
+        defaultSearch: undefined,
+      }));
     } catch (e) {
       if (axios.isAxiosError(e) && e.response?.status === 400) {
         throw new Error('');

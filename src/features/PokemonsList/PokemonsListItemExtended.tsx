@@ -1,15 +1,32 @@
 import { Component } from 'react';
 
-class PokemonsListItemExtended extends Component<PokemonExtended> {
+interface Props {
+  pokemon: PokemonExtended;
+}
+
+class PokemonsListItemExtended extends Component<Props> {
   render() {
-    const { name, height, order, weight } = this.props;
+    const { name, height, order, weight } = this.props.pokemon;
     return (
-      <div className="flex gap-2">
-        <span>{name}</span>
-        <span>{height}</span>
-        <span>{order}</span>
-        <span>{weight}</span>
-      </div>
+      <tr>
+        <td className="flex justify-center">
+          <div className="flex justify-center"></div>
+          <span className="font-medium capitalize">{name}</span>
+        </td>
+        <td>
+          <div className="flex grow gap-4">
+            <div>
+              <span className="font-medium">Height:</span> {height}
+            </div>
+            <div>
+              <span className="font-medium">Order:</span> {order}
+            </div>
+            <div>
+              <span className="font-medium">Weight:</span> {weight}
+            </div>
+          </div>
+        </td>
+      </tr>
     );
   }
 }
