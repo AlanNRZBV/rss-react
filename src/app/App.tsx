@@ -17,10 +17,22 @@ class App extends Component<object, AppState> {
   };
 
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    localStorage.setItem('searchData', this.state.search);
+
     this.setState((prevState) => ({
       ...prevState,
       search: e.target.value.toLowerCase().trim(),
     }));
+  };
+
+  defaultRequest = async () => {
+    const res = await baseApi.get<DefaultResponse>(`/?limit=20&offset=0`);
+    this.setState((prevState) => ({
+      ...prevState,
+      defaultSearch: res.data,
+      pokemon: undefined,
+    }));
+    this.setState((prevState) => ({ ...prevState, isLoading: false }));
   };
 
   async componentDidMount() {
@@ -28,15 +40,9 @@ class App extends Component<object, AppState> {
     try {
       this.setState((prevState) => ({ ...prevState, isLoading: true }));
       this.setState((prevState) => ({ ...prevState, isError: false }));
-      console.log(searchData);
+
       if (!searchData) {
-        const res = await baseApi.get<DefaultResponse>(`/?limit=20&offset=0`);
-        this.setState((prevState) => ({
-          ...prevState,
-          defaultSearch: res.data,
-          pokemon: undefined,
-        }));
-        this.setState((prevState) => ({ ...prevState, isLoading: false }));
+        await this.defaultRequest();
         return;
       }
       this.setState((prevState) => ({
@@ -59,7 +65,13 @@ class App extends Component<object, AppState> {
     e.preventDefault();
     e.stopPropagation();
     try {
-      localStorage.setItem('searchData', this.state.search);
+      const isEmpty = this.state.search.length === 0;
+
+      if (isEmpty) {
+        await this.defaultRequest();
+        return;
+      }
+
       this.setState((prevState) => ({ ...prevState, isLoading: true }));
       this.setState((prevState) => ({ ...prevState, isError: false }));
       const res = await baseApi.get<PokemonExtended>(`/${this.state.search}`);

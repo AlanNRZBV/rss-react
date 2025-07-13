@@ -9,10 +9,11 @@ interface Props {
 
 class SearchBar extends Component<Props> {
   render() {
-    const isEmpty = this.props.search === '';
+    const { isLoading, onSubmit, search, onChange } = this.props;
+
     return (
       <form
-        onSubmit={this.props.onSubmit}
+        onSubmit={onSubmit}
         className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8"
       >
         <div className="flex basis-1/2 flex-col gap-2">
@@ -25,18 +26,18 @@ class SearchBar extends Component<Props> {
               id="search"
               className="w-full py-2 focus:outline-none"
               placeholder="type here"
-              value={this.props.search}
-              onChange={this.props.onChange}
+              value={search}
+              onChange={onChange}
             />
           </div>
         </div>
         <button
           type="submit"
-          disabled={isEmpty || this.props.isLoading}
+          disabled={isLoading}
           className="flex items-center gap-0.5 self-end rounded-md border border-gray-400 bg-gray-100 px-4 py-2 font-medium uppercase"
         >
           <span>submit</span>
-          {this.props.isLoading && (
+          {isLoading && (
             <svg
               className="mr-3 -ml-1 size-5 animate-spin text-white"
               xmlns="http://www.w3.org/2000/svg"
