@@ -11,6 +11,7 @@ class App extends Component<object, AppState> {
     search: '',
     defaultSearch: undefined,
     pokemon: undefined,
+    isLoading: false,
   };
 
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +20,7 @@ class App extends Component<object, AppState> {
 
   async componentDidMount() {
     try {
+      this.setState((prevState) => ({ ...prevState, isLoading: true }));
       const savedData = localStorage.getItem('searchData');
       if (!savedData) {
         const res = await baseApi.get<DefaultResponse>(`/?limit=20&offset=0`);
@@ -27,6 +29,7 @@ class App extends Component<object, AppState> {
           defaultSearch: res.data,
           pokemon: undefined,
         }));
+        this.setState((prevState) => ({ ...prevState, isLoading: false }));
         return;
       }
     } catch (e) {
@@ -42,12 +45,15 @@ class App extends Component<object, AppState> {
     e.preventDefault();
     e.stopPropagation();
     try {
+      this.setState((prevState) => ({ ...prevState, isLoading: true }));
       const res = await baseApi.get<PokemonExtended>(`/${this.state.search}`);
       this.setState((prevState) => ({
         ...prevState,
         pokemon: res.data,
         defaultSearch: undefined,
       }));
+      this.setState((prevState) => ({ ...prevState, isLoading: false }));
+      return;
     } catch (e) {
       if (axios.isAxiosError(e) && e.response?.status === 400) {
         throw new Error('');
@@ -60,13 +66,14 @@ class App extends Component<object, AppState> {
   render() {
     const { itemListErrorMsg, searchBarErrorMsg } = errorMessages;
     return (
-      <div className="border border-amber-600 h-full w-full flex justify-center">
-        <div className="border border-blue-500 w-full mx-4 2xl:mx-32 xl:mx-28 lg:mx-16 sm:mx-8 py-2 px-4">
+      <div className="flex h-full w-full justify-center">
+        <div className="mx-4 flex w-full flex-col gap-8 px-4 py-2 sm:mx-8 lg:mx-16 xl:mx-28 2xl:mx-32">
           <ErrorBoundary message={searchBarErrorMsg}>
             <SearchBar
               onChange={this.handleChange}
               search={this.state.search}
               onSubmit={this.handleSubmit}
+              isLoading={this.state.isLoading}
             />
           </ErrorBoundary>
           <ErrorBoundary message={itemListErrorMsg}>

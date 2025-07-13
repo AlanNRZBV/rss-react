@@ -12,7 +12,7 @@ class PokemonsList extends Component<Props> {
     const { defaultSearch, pokemon } = this.props;
 
     return (
-      <table className="border border-black w-full">
+      <table className="w-full border border-black">
         <thead className="border border-b-black">
           <tr className="text-lg">
             <th className="border border-r-black py-2">Name</th>

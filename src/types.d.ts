@@ -2,6 +2,7 @@ declare type AppState = {
   search: string;
   defaultSearch: DefaultResponse | undefined;
   pokemon: PokemonExtended | undefined;
+  isLoading: boolean;
 };
 
 declare type DefaultResponse = {
