@@ -1,55 +1,17 @@
 import { type ChangeEvent, Component, type FormEvent } from 'react';
-import axios from 'axios';
-import { baseApi } from '../../shared/api/instance.ts';
 
-type PokemonType = {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
-};
+interface Props {
+  search: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+}
 
-type Pokemon = {
-  id: number;
-  height: number;
-  name: string;
-  order: number;
-  weight: number;
-  types: PokemonType[];
-};
-
-class SearchBar extends Component {
-  state = {
-    search: '',
-  };
-
-  handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      search: e.target.value,
-    });
-  };
-
-  handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try {
-      const res = await baseApi.get<Pokemon>(`/${this.state.search}`);
-      console.log(res);
-    } catch (e) {
-      if (axios.isAxiosError(e) && e.response?.status === 400) {
-        throw new Error('');
-      } else if (axios.isAxiosError(e) && e.code === 'ERR_NETWORK') {
-        console.log('server error', e.message);
-      }
-    }
-  };
-
+class SearchBar extends Component<Props> {
   render() {
-    const isEmpty = this.state.search === '';
+    const isEmpty = this.props.search === '';
     return (
       <form
-        onSubmit={this.handleSubmit}
+        onSubmit={this.props.onSubmit}
         className="flex items-center border border-amber-600 px-4 py-2"
       >
         <div className="flex flex-col grow gap2">
@@ -62,8 +24,8 @@ class SearchBar extends Component {
               id="search"
               className="border border-gray-400"
               placeholder="type here"
-              value={this.state.search}
-              onChange={this.handleNameChange}
+              value={this.props.search}
+              onChange={this.props.onChange}
             />
           </div>
         </div>
