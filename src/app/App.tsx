@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="border border-amber-600 h-full w-full flex justify-center">
-        <div className="border border-blue-500 w-full mx-4 2xl:mx-32 xl:mx-28 lg:mx-16 sm:mx-8">
+        <div className="border border-blue-500 w-full mx-4 2xl:mx-32 xl:mx-28 lg:mx-16 sm:mx-8 py-2 px-4">
           <SearchBar />
           <ItemList />
         </div>
