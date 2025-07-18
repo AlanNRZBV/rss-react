@@ -1,0 +1,68 @@
+import { type ChangeEvent, Component, type FormEvent } from 'react';
+
+interface Props {
+  search: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  isLoading: boolean;
+}
+
+class SearchBar extends Component<Props> {
+  render() {
+    const { isLoading, onSubmit, search, onChange } = this.props;
+
+    return (
+      <form
+        onSubmit={onSubmit}
+        className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8"
+      >
+        <div className="flex basis-1/2 flex-col gap-2">
+          <label htmlFor="search" className="text-xl">
+            Search
+          </label>
+          <div className="rounded-md border border-gray-400 pl-4">
+            <input
+              type="text"
+              id="search"
+              className="w-full py-2 focus:outline-none"
+              placeholder="type here"
+              value={search}
+              onChange={onChange}
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="flex items-center gap-0.5 self-end rounded-md border border-gray-400 bg-gray-100 px-4 py-2 font-medium uppercase"
+        >
+          <span>submit</span>
+          {isLoading && (
+            <svg
+              className="mr-3 -ml-1 size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="black"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="black"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
+        </button>
+      </form>
+    );
+  }
+}
+
+export default SearchBar;
