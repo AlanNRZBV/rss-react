@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from 'vitest';
-import SearchBar from './SearchBar.tsx';
+import SearchBar from './SearchBar';
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
