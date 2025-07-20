@@ -86,6 +86,14 @@ export const mockDefaultResponse: DefaultResponse = {
   ],
 };
 
+export const mockPokemon: PokemonExtended = {
+  name: 'bulbasaur',
+  weight: 69,
+  order: 1,
+  height: 7,
+  id: 1,
+};
+
 export const mockApiFailError: BasicError = {
   status: 0,
   message: 'Network error',

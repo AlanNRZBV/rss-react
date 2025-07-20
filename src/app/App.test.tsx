@@ -1,9 +1,9 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import '@testing-library/jest-dom';
 import App from './App.tsx';
 import { baseApi } from '../shared/api/instance.ts';
-import { mockDefaultResponse } from '../test-utils/lib.ts';
+import { mockDefaultResponse, mockPokemon } from '../test-utils/lib.ts';
 
 describe('App', () => {
   beforeEach(() => {
@@ -25,6 +25,35 @@ describe('App', () => {
       render(<App />);
       await waitFor(() => {
         expect(spy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('API Integration Tests', () => {
+    test('should call API with correct parameters', async () => {
+      const dataFromLS = localStorage.getItem('searchData');
+      const apiSpy = vi.spyOn(baseApi, 'get').mockResolvedValue(mockPokemon);
+
+      render(<App />);
+
+      await waitFor(() => {
+        expect(apiSpy).toHaveBeenCalledWith(`/${dataFromLS}`);
+      });
+    });
+    test('should call API with correct parameters', async () => {
+      const dataFromLS = localStorage.getItem('searchData');
+      const apiSpy = vi.spyOn(baseApi, 'get').mockResolvedValue(mockPokemon);
+
+      render(<App />);
+
+      await waitFor(() => {
+        expect(apiSpy).toHaveBeenCalledWith(`/${dataFromLS}`);
+
+        const descriptionPart = screen.getByText(mockPokemon.height, {
+          selector: 'div',
+        });
+
+        expect(descriptionPart).toBeInTheDocument();
       });
     });
   });
