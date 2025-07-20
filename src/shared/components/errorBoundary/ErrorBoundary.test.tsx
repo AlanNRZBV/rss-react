@@ -3,8 +3,10 @@ import { describe, expect, test, vi } from 'vitest';
 import '@testing-library/jest-dom';
 import ErrorBoundary from './ErrorBoundary.tsx';
 
+const errorChildMsg = 'They are in the trees';
+
 const ErrorChild = () => {
-  throw new Error('They are in the trees');
+  throw new Error(errorChildMsg);
 };
 
 describe('ErrorBoundary', () => {
@@ -22,7 +24,7 @@ describe('ErrorBoundary', () => {
 
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: 'They are in the trees',
+          message: errorChildMsg,
         }),
         expect.anything()
       );
@@ -36,8 +38,13 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>
       );
 
-      const fallback = screen.getByText(errMsg);
+      const fallback = screen.getByText(errMsg, { selector: 'div' });
       expect(fallback).toBeInTheDocument();
     });
+  });
+  describe('Error Button Tests', () => {
+    test('should throw error when test button is clicked', async () => {});
+
+    test('should trigger error boundary fallback UI', async () => {});
   });
 });
