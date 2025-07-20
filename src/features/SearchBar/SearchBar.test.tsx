@@ -186,4 +186,63 @@ describe('SearchBar', () => {
       expect(handleMockSubmit).toHaveBeenCalledTimes(1);
     });
   });
+  describe('localStorage integration', () => {
+    let searchValue = '';
+    let dataFromLS: string | null = '';
+    const newSearchValue = 'newTestString';
+
+    beforeEach(() => {
+      localStorage.clear();
+      localStorage.setItem(key, value);
+      searchValue = '';
+      dataFromLS = localStorage.getItem(key);
+    });
+
+    test('should retrieve saved search term on component mount', () => {
+      render(
+        <SearchBar
+          search={dataFromLS ? dataFromLS : ''}
+          onChange={vi.fn()}
+          onSubmit={vi.fn()}
+          isLoading={false}
+        />
+      );
+
+      const input = screen.getByLabelText(/search/i);
+      expect(input).toHaveValue(value);
+    });
+
+    test('should overwrite existing localStorage value when new search is performed', async () => {
+      const user = userEvent.setup();
+
+      const handleMockChange = vi.fn((e: ChangeEvent<HTMLInputElement>) => {
+        searchValue = e.target.value.trim();
+        localStorage.setItem(key, searchValue);
+      });
+
+      const { rerender } = render(
+        <SearchBar
+          search={searchValue}
+          onChange={handleMockChange}
+          onSubmit={vi.fn()}
+          isLoading={false}
+        />
+      );
+      const input = screen.getByLabelText(/search/i);
+
+      for (const char of newSearchValue) {
+        await user.type(input, char);
+        rerender(
+          <SearchBar
+            search={searchValue}
+            onChange={handleMockChange}
+            onSubmit={vi.fn()}
+            isLoading={false}
+          />
+        );
+      }
+
+      expect(searchValue).toBe(newSearchValue);
+    });
+  });
 });
