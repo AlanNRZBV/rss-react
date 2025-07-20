@@ -85,3 +85,16 @@ export const mockDefaultResponse: DefaultResponse = {
     },
   ],
 };
+
+export const mockApiFailError: BasicError = {
+  status: 0,
+  message: 'Network error',
+};
+export const mockApiNotFoundError: BasicError = {
+  status: 404,
+  message: 'Not found',
+};
+export const mockApiServerError: BasicError = {
+  status: 500,
+  message: 'Server error',
+};
