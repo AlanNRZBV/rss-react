@@ -5,6 +5,7 @@ import ErrorBoundary from '../shared/components/errorBoundary/ErrorBoundary.tsx'
 import { errorMessages } from '../shared/lib/errorMessages.ts';
 import { baseApi } from '../shared/api/instance.ts';
 import axios from 'axios';
+import { Outlet } from 'react-router';
 
 class App extends Component<object, AppState> {
   state: AppState = {
@@ -140,6 +141,7 @@ class App extends Component<object, AppState> {
       this.state;
     return (
       <div className="flex h-full w-full justify-center">
+        <Outlet />
         <div className="mx-4 flex w-full flex-col gap-8 px-4 py-2 sm:mx-8 lg:mx-16 xl:mx-28 2xl:mx-32">
           <ErrorBoundary message={searchBarErrorMsg}>
             <SearchBar
