@@ -1,8 +1,4 @@
 import { type ChangeEvent, Component, type FormEvent } from 'react';
-import SearchBar from '../features/SearchBar/SearchBar.tsx';
-import PokemonsList from '../features/PokemonsList/PokemonsList.tsx';
-import ErrorBoundary from '../shared/components/errorBoundary/ErrorBoundary.tsx';
-import { errorMessages } from '../shared/lib/errorMessages.ts';
 import { baseApi } from '../shared/api/instance.ts';
 import axios from 'axios';
 import { Outlet } from 'react-router';
@@ -136,33 +132,7 @@ class App extends Component<object, AppState> {
   };
 
   render() {
-    const { itemListErrorMsg, searchBarErrorMsg } = errorMessages;
-    const { search, defaultSearch, isError, isLoading, error, pokemon } =
-      this.state;
-    return (
-      <div className="flex h-full w-full justify-center">
-        <Outlet />
-        <div className="mx-4 flex w-full flex-col gap-8 px-4 py-2 sm:mx-8 lg:mx-16 xl:mx-28 2xl:mx-32">
-          <ErrorBoundary message={searchBarErrorMsg}>
-            <SearchBar
-              onChange={this.handleChange}
-              search={search}
-              onSubmit={this.handleSubmit}
-              isLoading={isLoading}
-            />
-          </ErrorBoundary>
-          <ErrorBoundary message={itemListErrorMsg}>
-            <PokemonsList
-              defaultSearch={defaultSearch}
-              pokemon={pokemon}
-              isLoading={isLoading}
-              isError={isError}
-              error={error}
-            />
-          </ErrorBoundary>
-        </div>
-      </div>
-    );
+    return <Outlet />;
   }
 }
 export default App;
