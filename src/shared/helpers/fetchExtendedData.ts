@@ -3,9 +3,9 @@ import { handleError } from './handleError.ts';
 
 export const fetchExtendedData = async (
   arg: string
-): Promise<PokemonExtended | BasicError> => {
+): Promise<PokemonItem | BasicError> => {
   try {
-    const res = await baseApi.get<PokemonExtended>(`/${arg}`);
+    const res = await baseApi.get<PokemonItem>(`/${arg}`);
     return res.data;
   } catch (e) {
     return handleError(e);

@@ -1,3 +1,5 @@
+import type { ChangeEvent, FormEvent } from 'react';
+
 declare type BasicError = {
   status: number;
   message: string;
@@ -6,10 +8,19 @@ declare type BasicError = {
 declare type AppState = {
   search: string;
   defaultSearch: DefaultResponse | undefined;
-  pokemon: PokemonExtended | undefined;
+  pokemon: PokemonItem | undefined;
   isLoading: boolean;
   isError: boolean;
   error: BasicError | undefined;
+};
+
+declare type PokemonContext = {
+  app: AppState;
+};
+
+declare type ActionsContext = {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 };
 
 declare type DefaultResponse = {
@@ -19,12 +30,17 @@ declare type DefaultResponse = {
   results: Pokemon[];
 };
 
-declare type PokemonExtended = {
+declare type PokemonItem = {
   id: number;
   height: number;
   name: string;
   order: number;
   weight: number;
+};
+
+declare type PokemonExtended = PokemonItem & {
+  is_default: boolean;
+  base_experience: number;
 };
 
 declare type Pokemon = {

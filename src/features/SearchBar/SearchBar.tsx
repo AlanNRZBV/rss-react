@@ -1,13 +1,14 @@
-import { type ChangeEvent, type FC, type FormEvent } from 'react';
+import { type FC } from 'react';
+import { usePokemon } from '../../shared/hooks/usePokemon.ts';
+import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
-interface Props {
-  search: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  isLoading: boolean;
-}
+const SearchBar: FC = () => {
+  const { app } = usePokemon();
+  const { onSubmit, onChange } = usePokemonActions();
+  const { search, isLoading } = app;
 
-const SearchBar: FC<Props> = ({ search, isLoading, onChange, onSubmit }) => {
+  console.log('Searchbar render');
+
   return (
     <form
       onSubmit={onSubmit}

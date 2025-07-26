@@ -86,7 +86,7 @@ export const mockDefaultResponse: DefaultResponse = {
   ],
 };
 
-export const mockPokemon: PokemonExtended = {
+export const mockPokemon: PokemonItem = {
   name: 'bulbasaur',
   weight: 69,
   order: 1,

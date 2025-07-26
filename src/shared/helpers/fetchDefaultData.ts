@@ -1,5 +1,6 @@
 import { handleError } from './handleError';
 import { baseApi } from '../api/instance.ts';
+import type { BasicError, DefaultResponse } from '../../types';
 
 export const fetchDefaultData = async (): Promise<
   DefaultResponse | BasicError

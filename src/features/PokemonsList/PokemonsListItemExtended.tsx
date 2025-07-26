@@ -1,7 +1,7 @@
 import { Component } from 'react';
 
 interface Props {
-  pokemon: PokemonExtended;
+  pokemon: PokemonItem;
 }
 
 class PokemonsListItemExtended extends Component<Props> {
