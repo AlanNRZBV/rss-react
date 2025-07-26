@@ -26,9 +26,14 @@ const initialState: AppState = {
 
 export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
   const [app, setApp] = useState<AppState>(initialState);
+  const [detailedView, setDetailedView] = useState(false);
   const { dataFromLs, setLocalState } = useLocalStorage();
 
   const { search } = app;
+
+  const toggleView = () => {
+    setDetailedView(!detailedView);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -151,8 +156,11 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
     [search, setLocalState]
   );
 
-  const value = useMemo(() => ({ app }), [app]);
-  const actions = useMemo(() => ({ onChange, onSubmit }), [onChange, onSubmit]);
+  const value = useMemo(() => ({ app, detailedView }), [app, detailedView]);
+  const actions = useMemo(
+    () => ({ onChange, onSubmit, toggleView }),
+    [onChange, onSubmit, toggleView]
+  );
 
   return (
     <PokemonContext.Provider value={value}>

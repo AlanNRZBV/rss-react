@@ -16,11 +16,13 @@ declare type AppState = {
 
 declare type PokemonContext = {
   app: AppState;
+  detailedView: boolean;
 };
 
 declare type ActionsContext = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  toggleView: () => void;
 };
 
 declare type DefaultResponse = {

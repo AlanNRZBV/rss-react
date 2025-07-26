@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
         Component: Home,
         children: [
           {
-            path: '',
+            path: ':pokemonName',
             Component: DetailedView,
           },
         ],
