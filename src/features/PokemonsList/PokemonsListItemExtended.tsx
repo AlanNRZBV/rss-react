@@ -16,7 +16,7 @@ const PokemonsListItemExtended: FC<Props> = ({ pokemon }) => {
         <div className="flex justify-center"></div>
         <NavLink
           onClick={toggleView}
-          to={`/${name}`}
+          to={`extended`}
           className="font-medium capitalize"
         >
           {name}

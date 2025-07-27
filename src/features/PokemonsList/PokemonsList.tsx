@@ -2,11 +2,15 @@ import PokemonsListItem from './PokemonsListItem.tsx';
 import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
 import { usePokemon } from '../../shared/hooks/usePokemon.ts';
 import type { DefaultResponse } from '../../types';
+import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 const PokemonsList = () => {
   const { app } = usePokemon();
+  const { changePage } = usePokemonActions();
   const { isLoading, isError, defaultSearch, error, pokemon } = app;
-  const { previous } = defaultSearch as DefaultResponse;
+  const { previous, next } = defaultSearch
+    ? (defaultSearch as DefaultResponse)
+    : { previous: null, next: null };
 
   if (isError && error) {
     const { message, status } = error;
@@ -49,19 +53,29 @@ const PokemonsList = () => {
           <PokemonsListItemExtended pokemon={pokemon} />
         </tbody>
       )}
-      <caption className="caption-bottom">
-        <div className="mt-2 flex justify-center gap-2">
-          <button
-            className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400'}`}
-            disabled={previous === null}
-          >
-            previous
-          </button>
-          <button className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase">
-            next
-          </button>
-        </div>
-      </caption>
+      {defaultSearch && (
+        <caption className="caption-bottom">
+          <div className="mt-2 flex justify-center gap-2">
+            <button
+              onClick={() => {
+                changePage(previous);
+              }}
+              className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400'}`}
+              disabled={previous === null}
+            >
+              previous
+            </button>
+            <button
+              onClick={() => {
+                changePage(next);
+              }}
+              className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase"
+            >
+              next
+            </button>
+          </div>
+        </caption>
+      )}
     </table>
   );
 };

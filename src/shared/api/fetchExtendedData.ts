@@ -1,5 +1,5 @@
-import { baseApi } from '../api/instance.ts';
-import { handleError } from './handleError.ts';
+import { baseApi } from './instance.ts';
+import { handleError } from '../helpers/handleError.ts';
 
 export const fetchExtendedData = async (
   arg: string

@@ -23,6 +23,7 @@ declare type ActionsContext = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   toggleView: () => void;
+  changePage: (arg: string | null | undefined) => void;
 };
 
 declare type DefaultResponse = {

@@ -7,7 +7,7 @@ const DetailedView = () => {
   const { toggleView } = usePokemonActions();
 
   const onClickHandler = () => {
-    navigate('/');
+    navigate(-1);
     toggleView();
   };
 
