@@ -1,24 +1,39 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import SearchBar from './SearchBar';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { type ChangeEvent, type FormEvent } from 'react';
+import { mockPokemon, mockPokemonDetailed } from '../../test-utils/lib.ts';
+import { MemoryRouter } from 'react-router';
+import { PokemonProvider } from '../../app/providers/PokemonProvider.tsx';
+import { fetchExtended } from '../../shared/api/fetchExtended.ts';
+
+vi.mock('../../shared/api/fetchDetailed.ts', () => ({
+  fetchDetailed: vi.fn().mockResolvedValue(mockPokemonDetailed),
+}));
+vi.mock('../../shared/api/fetchExtended.ts', () => ({
+  fetchExtended: vi.fn().mockResolvedValue(mockPokemon),
+}));
+vi.mock('../../shared/api/fetchDefaultData.ts', () => ({
+  fetchDefaultData: vi.fn().mockResolvedValue({ results: [] }),
+}));
+vi.mock('../../shared/api/fetchPage.ts', () => ({
+  fetchPage: vi.fn().mockResolvedValue({ results: [] }),
+}));
 
 describe('SearchBar', () => {
-  const key = 'searchData';
+  const key = 'searchValue';
   const value = 'testString';
 
   describe('render UI elements', () => {
     beforeEach(() => {
       render(
-        <SearchBar
-          search={''}
-          onChange={vi.fn()}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
     });
 
@@ -41,12 +56,11 @@ describe('SearchBar', () => {
       localStorage.setItem(key, value);
       const dataFromLS = localStorage.getItem(key);
       render(
-        <SearchBar
-          search={dataFromLS ? dataFromLS : ''}
-          onChange={vi.fn()}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
 
       const input = screen.getByLabelText(/search/i);
@@ -58,12 +72,11 @@ describe('SearchBar', () => {
       const value = dataFromLS ? dataFromLS : '';
 
       render(
-        <SearchBar
-          search={value}
-          onChange={vi.fn()}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
 
       const input = screen.getByLabelText(/search/i);
@@ -80,132 +93,102 @@ describe('SearchBar', () => {
       localStorage.clear();
     });
 
-    const handleMockChange = vi.fn((e: ChangeEvent<HTMLInputElement>) => {
-      searchValue = e.target.value.trim();
-      localStorage.setItem(key, searchValue);
-    });
-
-    const handleMockSubmit = vi.fn((e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
-
     test('should update input value on user typing', async () => {
-      const { rerender } = render(
-        <SearchBar
-          search={searchValue}
-          onChange={handleMockChange}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+      searchValue = 'Pikachu';
+
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
       const input = screen.getByLabelText(/search/i);
 
-      for (const char of value) {
-        await user.type(input, char);
-        rerender(
-          <SearchBar
-            search={searchValue}
-            onChange={handleMockChange}
-            onSubmit={vi.fn()}
-            isLoading={false}
-          />
-        );
-      }
-      expect(input).toHaveValue(value);
+      await user.type(input, searchValue);
+
+      expect(input).toHaveValue('pikachu');
     });
 
     test('should save input value into local storage', async () => {
-      const { rerender } = render(
-        <SearchBar
-          search={searchValue}
-          onChange={handleMockChange}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+      localStorage.setItem(key, searchValue);
+      const testValue = 'newString';
+
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
       const input = screen.getByLabelText(/search/i);
+      const btn = screen.getByRole('button', { name: /submit/i });
 
-      for (const char of value) {
-        await user.type(input, char);
-        rerender(
-          <SearchBar
-            search={searchValue}
-            onChange={handleMockChange}
-            onSubmit={vi.fn()}
-            isLoading={false}
-          />
-        );
-      }
-      const dataFromLS = localStorage.getItem(key);
+      await user.type(input, testValue);
+      await user.click(btn);
 
-      expect(dataFromLS).toBe(searchValue);
+      const newDataFromLs = localStorage.getItem(key);
+
+      expect(newDataFromLs).toBe(testValue.toLowerCase());
     });
 
     test('trims whitespace from search input before saving', async () => {
-      searchValue = '';
-
-      const { rerender } = render(
-        <SearchBar
-          search={searchValue}
-          onChange={handleMockChange}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
 
       const input = screen.getByLabelText(/search/i);
+      const trimmedValue = 'testString';
       const whiteSpaceValue = '   testString   ';
+      const btn = screen.getByRole('button', { name: /submit/i });
 
-      for (const char of whiteSpaceValue) {
-        await user.type(input, char);
-        rerender(
-          <SearchBar
-            search={searchValue}
-            onChange={handleMockChange}
-            onSubmit={vi.fn()}
-            isLoading={false}
-          />
-        );
-      }
+      await user.type(input, whiteSpaceValue);
+      await user.click(btn);
 
       const saved = localStorage.getItem(key);
-      expect(saved).toBe(value);
+      expect(saved).toBe(trimmedValue.toLowerCase());
     });
     test('should trigger search callback with correct parameters', async () => {
+      const arg = 'pika';
+
       render(
-        <SearchBar
-          search={'bulbasaur'}
-          onChange={handleMockChange}
-          onSubmit={handleMockSubmit}
-          isLoading={false}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
+      const input = screen.getByLabelText(/search/i);
       const btn = screen.getByRole('button', { name: /submit/i });
+
+      await user.type(input, arg);
       await user.click(btn);
-      expect(handleMockSubmit).toHaveBeenCalledTimes(1);
+
+      await waitFor(() => {
+        expect(vi.mocked(fetchExtended)).toHaveBeenCalledWith(arg);
+      });
     });
   });
   describe('localStorage integration', () => {
-    let searchValue = '';
-    let dataFromLS: string | null = '';
     const newSearchValue = 'newTestString';
 
     beforeEach(() => {
       localStorage.clear();
+
       localStorage.setItem(key, value);
-      searchValue = '';
-      dataFromLS = localStorage.getItem(key);
     });
 
     test('should retrieve saved search term on component mount', () => {
       render(
-        <SearchBar
-          search={dataFromLS ? dataFromLS : ''}
-          onChange={vi.fn()}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
 
       const input = screen.getByLabelText(/search/i);
@@ -215,34 +198,23 @@ describe('SearchBar', () => {
     test('should overwrite existing localStorage value when new search is performed', async () => {
       const user = userEvent.setup();
 
-      const handleMockChange = vi.fn((e: ChangeEvent<HTMLInputElement>) => {
-        searchValue = e.target.value.trim();
-        localStorage.setItem(key, searchValue);
-      });
-
-      const { rerender } = render(
-        <SearchBar
-          search={searchValue}
-          onChange={handleMockChange}
-          onSubmit={vi.fn()}
-          isLoading={false}
-        />
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <SearchBar />
+          </PokemonProvider>
+        </MemoryRouter>
       );
+
       const input = screen.getByLabelText(/search/i);
+      const btn = screen.getByRole('button', { name: /submit/i });
+      await user.clear(input);
+      await user.type(input, newSearchValue);
+      await user.click(btn);
 
-      for (const char of newSearchValue) {
-        await user.type(input, char);
-        rerender(
-          <SearchBar
-            search={searchValue}
-            onChange={handleMockChange}
-            onSubmit={vi.fn()}
-            isLoading={false}
-          />
-        );
-      }
+      const newData = localStorage.getItem(key);
 
-      expect(searchValue).toBe(newSearchValue);
+      expect(newData).toBe(newSearchValue.toLowerCase());
     });
   });
 });

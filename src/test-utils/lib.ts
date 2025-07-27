@@ -1,4 +1,9 @@
-import type { BasicError, DefaultResponse, PokemonExtended } from '../types';
+import type {
+  BasicError,
+  DefaultResponse,
+  PokemonDetailed,
+  PokemonExtended,
+} from '../types';
 
 export const mockDefaultResponse: DefaultResponse = {
   count: 1302,
@@ -94,6 +99,15 @@ export const mockPokemon: PokemonExtended = {
   order: 1,
   height: 7,
   id: 1,
+};
+export const mockPokemonDetailed: PokemonDetailed = {
+  name: 'bulbasaur',
+  weight: 69,
+  order: 1,
+  height: 7,
+  id: 1,
+  base_experience: 333,
+  is_default: false,
 };
 
 export const mockApiFailError: BasicError = {

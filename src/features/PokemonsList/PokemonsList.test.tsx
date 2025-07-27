@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, expect, test, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import PokemonsList from './PokemonsList';
 import {
   mockApiFailError,
@@ -8,33 +8,34 @@ import {
   mockDefaultResponse,
 } from '../../test-utils/lib.ts';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router';
+import { PokemonProvider } from '../../app/providers/PokemonProvider.tsx';
+import * as fetchModule from '../../shared/api/fetchDefaultData';
 
 describe('PokemonList', () => {
   describe('rendering tests', () => {
-    const valueToPass = 21;
+    const valueToPass = 11;
 
-    test('should render correct number of items when data is provided', () => {
+    test('should render correct number of items when data is provided', async () => {
       render(
-        <PokemonsList
-          error={undefined}
-          isError={false}
-          isLoading={false}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
-      const items = screen.getAllByRole('row');
-      expect(items.length).toBe(valueToPass);
+      await waitFor(() => {
+        const items = screen.getAllByRole('row');
+        expect(items.length).toBe(valueToPass);
+      });
     });
     test('should show loading state while fetching data', () => {
       render(
-        <PokemonsList
-          error={undefined}
-          isError={false}
-          isLoading={true}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
       const checkString = 'Loading content';
       const loadingElement = screen.getByText(checkString, { selector: 'div' });
@@ -43,85 +44,93 @@ describe('PokemonList', () => {
   });
   describe('data display tests', () => {
     const nameCheck = mockDefaultResponse.results[0].name;
-    const descriptionCheck = mockDefaultResponse.results[0].url;
 
-    test('should correctly display item names and descriptions', () => {
+    test('should correctly display item names and descriptions', async () => {
       render(
-        <PokemonsList
-          error={undefined}
-          isError={false}
-          isLoading={false}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
-      const spanElement = screen.getByText(nameCheck, { selector: 'span' });
-      const anchorElement = screen.getByText(descriptionCheck, {
-        selector: 'a',
-      });
+      const spanElement = await screen.findByText(nameCheck, { selector: 'a' });
 
       expect(spanElement).toBeInTheDocument();
-      expect(anchorElement).toBeInTheDocument();
     });
   });
 
   describe('error handling test', () => {
-    test('should display error message when API call fails', () => {
+    test('should display error message when API call fails', async () => {
+      vi.spyOn(fetchModule, 'fetchDefaultData').mockImplementationOnce(() =>
+        Promise.resolve(mockApiFailError)
+      );
+
       const { message, status } = mockApiFailError;
 
       render(
-        <PokemonsList
-          error={mockApiFailError}
-          isError={true}
-          isLoading={false}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
-      const statusElement = screen.getByText(`Error status : ${status}`, {
-        selector: 'span',
-      });
-      const messageElement = screen.getByText(`Error message : ${message}`, {
-        selector: 'span',
-      });
+      const statusElement = await screen.findByText(
+        `Error status : ${status}`,
+        {
+          selector: 'span',
+        }
+      );
+      const messageElement = await screen.findByText(
+        `Error message : ${message}`,
+        {
+          selector: 'span',
+        }
+      );
       expect(statusElement).toBeInTheDocument();
       expect(messageElement).toBeInTheDocument();
     });
-    test('should show appropriate error for HTTP status code 500', () => {
+    test('should show appropriate error for HTTP status code 500', async () => {
+      vi.spyOn(fetchModule, 'fetchDefaultData').mockImplementationOnce(() =>
+        Promise.resolve(mockApiServerError)
+      );
       const { message, status } = mockApiServerError;
 
       render(
-        <PokemonsList
-          error={mockApiServerError}
-          isError={true}
-          isLoading={false}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
-      const statusElement = screen.getByText(`Error status : ${status}`, {
-        selector: 'span',
+      await waitFor(() => {
+        const statusElement = screen.getByText(`Error status : ${status}`, {
+          selector: 'span',
+        });
+        const messageElement = screen.getByText(`Error message : ${message}`, {
+          selector: 'span',
+        });
+        expect(statusElement).toBeInTheDocument();
+        expect(messageElement).toBeInTheDocument();
       });
-      const messageElement = screen.getByText(`Error message : ${message}`, {
-        selector: 'span',
-      });
-      expect(statusElement).toBeInTheDocument();
-      expect(messageElement).toBeInTheDocument();
     });
-    test('should show appropriate error for HTTP status code 404', () => {
-      render(
-        <PokemonsList
-          error={mockApiNotFoundError}
-          isError={true}
-          isLoading={false}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+    test('should show appropriate error for HTTP status code 404', async () => {
+      vi.spyOn(fetchModule, 'fetchDefaultData').mockImplementationOnce(() =>
+        Promise.resolve(mockApiNotFoundError)
       );
-      const divElement = screen.getByText('Wrong pokemon name', {
-        selector: 'div',
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        const divElement = screen.getByText('Wrong pokemon name', {
+          selector: 'div',
+        });
+        expect(divElement).toBeInTheDocument();
       });
-      expect(divElement).toBeInTheDocument();
     });
   });
 });
