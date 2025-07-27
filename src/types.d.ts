@@ -8,10 +8,11 @@ declare type BasicError = {
 declare type AppState = {
   search: string;
   defaultSearch: DefaultResponse | undefined;
-  pokemon: PokemonItem | undefined;
+  pokemon: PokemonExtended | undefined;
   isLoading: boolean;
   isError: boolean;
   error: BasicError | undefined;
+  pokemonDetailed: PokemonDetailed | undefined;
 };
 
 declare type PokemonContext = {
@@ -24,6 +25,7 @@ declare type ActionsContext = {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   toggleView: () => void;
   changePage: (arg: string | null | undefined) => void;
+  fetchDetailedHandle: (arg: string) => void;
 };
 
 declare type DefaultResponse = {
@@ -33,7 +35,7 @@ declare type DefaultResponse = {
   results: Pokemon[];
 };
 
-declare type PokemonItem = {
+declare type PokemonExtended = {
   id: number;
   height: number;
   name: string;
@@ -41,7 +43,7 @@ declare type PokemonItem = {
   weight: number;
 };
 
-declare type PokemonExtended = PokemonItem & {
+declare type PokemonDetailed = PokemonExtended & {
   is_default: boolean;
   base_experience: number;
 };

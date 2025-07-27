@@ -34,7 +34,7 @@ const PokemonsList = () => {
   }
 
   return (
-    <table className="mt-4 w-full border-collapse border border-gray-400">
+    <table className="mt-4 w-full border border-gray-400">
       <thead className="">
         <tr className="text-lg">
           <th className="border-r border-r-gray-400 py-2">Name</th>

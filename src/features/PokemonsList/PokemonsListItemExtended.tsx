@@ -1,22 +1,22 @@
 import type { FC } from 'react';
-import type { PokemonItem } from '../../types';
+import type { PokemonExtended } from '../../types';
 import { NavLink } from 'react-router';
 import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 interface Props {
-  pokemon: PokemonItem;
+  pokemon: PokemonExtended;
 }
 
 const PokemonsListItemExtended: FC<Props> = ({ pokemon }) => {
   const { name, height, order, weight } = pokemon;
   const { toggleView } = usePokemonActions();
   return (
-    <tr>
+    <tr className="border-t border-t-gray-400">
       <td className="flex justify-center">
         <div className="flex justify-center"></div>
         <NavLink
           onClick={toggleView}
-          to={`extended`}
+          to={`details/${name}`}
           className="font-medium capitalize"
         >
           {name}

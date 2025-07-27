@@ -2,6 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import PokemonsListItem from './PokemonsListItem.tsx';
 import '@testing-library/jest-dom';
+import type { Pokemon } from '../../types';
 
 describe('PokemonsItemList tests', () => {
   describe('rendering tests', () => {

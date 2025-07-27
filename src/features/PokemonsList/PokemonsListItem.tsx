@@ -4,13 +4,17 @@ import { NavLink } from 'react-router';
 import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
-  const { toggleView } = usePokemonActions();
+  const { toggleView, fetchDetailedHandle } = usePokemonActions();
+  const toggleAndFetch = () => {
+    toggleView();
+    fetchDetailedHandle(name);
+  };
 
   return (
     <tr className="border border-gray-400 not-even:bg-gray-100">
       <td className="flex justify-center px-2 py-1">
         <NavLink
-          onClick={toggleView}
+          onClick={toggleAndFetch}
           to={`details/${name}`}
           className="font-medium capitalize"
         >
