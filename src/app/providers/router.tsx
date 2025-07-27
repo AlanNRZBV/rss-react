@@ -9,12 +9,13 @@ export const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
+      { index: true, Component: Home },
       {
-        path: '',
+        path: ':searchString',
         Component: Home,
         children: [
           {
-            path: ':pokemonName',
+            path: 'pokemon/:pokemonName',
             Component: DetailedView,
           },
         ],

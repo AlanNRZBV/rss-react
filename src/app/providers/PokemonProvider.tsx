@@ -14,6 +14,7 @@ import { fetchExtendedData } from '../../shared/helpers/fetchExtendedData.ts';
 import { fetchDefaultData } from '../../shared/helpers/fetchDefaultData.ts';
 import { PokemonContext } from '../context/pokemonContext.ts';
 import { ActionsContext } from '../context/actionsContext.ts';
+import { useNavigate } from 'react-router';
 
 const initialState: AppState = {
   search: '',
@@ -28,21 +29,22 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
   const [app, setApp] = useState<AppState>(initialState);
   const [detailedView, setDetailedView] = useState(false);
   const { dataFromLs, setLocalState } = useLocalStorage();
+  const navigate = useNavigate();
 
   const { search } = app;
 
-  const toggleView = () => {
+  const toggleView = useCallback(() => {
     setDetailedView(!detailedView);
-  };
+  }, [detailedView]);
 
   useEffect(() => {
     let isMounted = true;
-
     if (!dataFromLs) return;
 
     const initializeData = async () => {
       try {
         if (dataFromLs) {
+          navigate(`/${dataFromLs}`);
           setApp((prevState) => ({
             ...prevState,
             search: dataFromLs,
@@ -53,6 +55,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
           if (isMounted) {
             setApp((prevState) => ({
               ...prevState,
+              defaultSearch: undefined,
               pokemon: 'status' in result ? undefined : result,
               isError: 'status' in result,
               error: 'status' in result ? result : undefined,
@@ -78,7 +81,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       isMounted = false;
     };
-  }, [dataFromLs]);
+  }, [dataFromLs, navigate]);
 
   useEffect(() => {
     let isMounted = true;
@@ -89,6 +92,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
       try {
         const res = await fetchDefaultData();
         if (isMounted) {
+          navigate(`/?limit=20&offset=0`);
           setApp((prevState) => ({
             ...prevState,
             defaultSearch: 'status' in res ? undefined : res,
@@ -114,7 +118,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       isMounted = false;
     };
-  }, [dataFromLs]);
+  }, [dataFromLs, navigate]);
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

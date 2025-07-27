@@ -7,8 +7,6 @@ const SearchBar: FC = () => {
   const { onSubmit, onChange } = usePokemonActions();
   const { search, isLoading } = app;
 
-  console.log('Searchbar render');
-
   return (
     <form
       onSubmit={onSubmit}

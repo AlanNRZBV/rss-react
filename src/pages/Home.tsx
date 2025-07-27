@@ -5,7 +5,6 @@ import { usePokemon } from '../shared/hooks/usePokemon.ts';
 
 const Home = () => {
   const { detailedView } = usePokemon();
-  console.log('Home page render');
 
   return (
     <div className="flex h-full w-full px-8 py-4">
