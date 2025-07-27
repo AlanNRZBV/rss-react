@@ -7,7 +7,7 @@ const Home = () => {
   const { detailedView } = usePokemon();
 
   return (
-    <div className="flex h-full w-full px-8 py-4">
+    <div className="flex h-full w-full flex-col">
       <div className="grow">
         <SearchBar />
         <PokemonsList />
