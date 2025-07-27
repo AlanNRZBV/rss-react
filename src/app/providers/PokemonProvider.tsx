@@ -10,11 +10,12 @@ import {
   useState,
 } from 'react';
 import useLocalStorage from '../../shared/hooks/useLocalStorage.ts';
-import { fetchExtendedData } from '../../shared/helpers/fetchExtendedData.ts';
-import { fetchDefaultData } from '../../shared/helpers/fetchDefaultData.ts';
+import { fetchExtendedData } from '../../shared/api/fetchExtendedData.ts';
+import { fetchDefaultData } from '../../shared/api/fetchDefaultData.ts';
 import { PokemonContext } from '../context/pokemonContext.ts';
 import { ActionsContext } from '../context/actionsContext.ts';
 import { useNavigate } from 'react-router';
+import { fetchPage } from '../../shared/api/fetchPage.ts';
 
 const initialState: AppState = {
   search: '',
@@ -36,6 +37,38 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
   const toggleView = useCallback(() => {
     setDetailedView(!detailedView);
   }, [detailedView]);
+
+  const changePage = useCallback(
+    async (arg: string | null | undefined) => {
+      if (!arg) return;
+
+      const url = new URL(arg);
+      const query = url.search;
+
+      try {
+        const res = await fetchPage(query);
+        setApp((prevState) => ({ ...prevState, isLoading: true }));
+        setApp((prevState) => ({
+          ...prevState,
+          defaultSearch: 'status' in res ? undefined : res,
+          pokemon: undefined,
+          isError: 'status' in res,
+          error: 'status' in res ? res : undefined,
+          isLoading: false,
+        }));
+        navigate(`${query}`);
+      } catch (e) {
+        console.error('Caught on try - changePage - ', e);
+        setApp((prevState) => ({
+          ...prevState,
+          isLoading: false,
+          isError: true,
+          error: { status: 0, message: 'Unexpected error' },
+        }));
+      }
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -92,7 +125,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
       try {
         const res = await fetchDefaultData();
         if (isMounted) {
-          navigate(`/?limit=20&offset=0`);
+          navigate(`?limit=10&offset=0`);
           setApp((prevState) => ({
             ...prevState,
             defaultSearch: 'status' in res ? undefined : res,
@@ -137,14 +170,28 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       try {
         setLocalState(search);
+
+        if (search) {
+          setApp((prevState) => ({ ...prevState, isLoading: true }));
+          const res = await fetchExtendedData(search);
+          setApp((prevState) => ({
+            ...prevState,
+            defaultSearch: undefined,
+            pokemon: 'status' in res ? undefined : res,
+            isError: 'status' in res,
+            error: 'status' in res ? res : undefined,
+            isLoading: false,
+          }));
+          return;
+        }
         setApp((prevState) => ({ ...prevState, isLoading: true }));
-        const result = await fetchExtendedData(search);
+        const res = await fetchDefaultData();
         setApp((prevState) => ({
           ...prevState,
-          defaultSearch: undefined,
-          pokemon: 'status' in result ? undefined : result,
-          isError: 'status' in result,
-          error: 'status' in result ? result : undefined,
+          defaultSearch: 'status' in res ? undefined : res,
+          pokemon: undefined,
+          isError: 'status' in res,
+          error: 'status' in res ? res : undefined,
           isLoading: false,
         }));
       } catch (e) {
@@ -162,8 +209,8 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value = useMemo(() => ({ app, detailedView }), [app, detailedView]);
   const actions = useMemo(
-    () => ({ onChange, onSubmit, toggleView }),
-    [onChange, onSubmit, toggleView]
+    () => ({ onChange, onSubmit, changePage, toggleView }),
+    [onChange, onSubmit, toggleView, changePage]
   );
 
   return (
