@@ -1,3 +1,5 @@
+import type { BasicError, DefaultResponse, PokemonExtended } from '../types';
+
 export const mockDefaultResponse: DefaultResponse = {
   count: 1302,
   next: 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20',
@@ -86,7 +88,7 @@ export const mockDefaultResponse: DefaultResponse = {
   ],
 };
 
-export const mockPokemon: PokemonItem = {
+export const mockPokemon: PokemonExtended = {
   name: 'bulbasaur',
   weight: 69,
   order: 1,

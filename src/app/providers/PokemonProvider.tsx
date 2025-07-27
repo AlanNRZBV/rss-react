@@ -16,6 +16,7 @@ import { PokemonContext } from '../context/pokemonContext.ts';
 import { ActionsContext } from '../context/actionsContext.ts';
 import { useNavigate } from 'react-router';
 import { fetchPage } from '../../shared/api/fetchPage.ts';
+import { fetchExtended } from '../../shared/api/fetchExtended.ts';
 
 const initialState: AppState = {
   search: '',
@@ -106,14 +107,14 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
             isLoading: true,
           }));
 
-          const result = await fetchDetailed(dataFromLs);
-          if (isMounted) {
+          const res = await fetchExtended(dataFromLs);
+          if (isMounted && res) {
             setApp((prevState) => ({
               ...prevState,
               defaultSearch: undefined,
-              pokemon: 'status' in result ? undefined : result,
-              isError: 'status' in result,
-              error: 'status' in result ? result : undefined,
+              pokemon: 'status' in res ? undefined : res,
+              isError: 'status' in res,
+              error: 'status' in res ? res : undefined,
               isLoading: false,
             }));
           }
@@ -147,7 +148,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
       try {
         setApp((prevState) => ({ ...prevState, isLoading: true }));
         const res = await fetchDefaultData();
-        if (isMounted) {
+        if (isMounted && res) {
           navigate(`?limit=10&offset=0`);
           setApp((prevState) => ({
             ...prevState,
