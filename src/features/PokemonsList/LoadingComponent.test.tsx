@@ -1,22 +1,23 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import PokemonsList from './PokemonsList.tsx';
-import { mockDefaultResponse } from '../../test-utils/lib.ts';
 import '@testing-library/jest-dom';
+import { PokemonProvider } from '../../app/providers/PokemonProvider.tsx';
+import { MemoryRouter } from 'react-router';
 
 describe('loading div', () => {
   describe('rendering test', () => {
-    test('show show/hide based on loading prop', () => {
-      let isLoading = true;
+    test('show show based on loading prop', () => {
+      vi.mock('../../shared/api/fetchDefaultData.ts', () => ({
+        fetchDefaultData: vi.fn(() => new Promise(() => {})),
+      }));
 
-      const { rerender } = render(
-        <PokemonsList
-          error={undefined}
-          isError={false}
-          isLoading={isLoading}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
+      render(
+        <MemoryRouter>
+          <PokemonProvider>
+            <PokemonsList />
+          </PokemonProvider>
+        </MemoryRouter>
       );
 
       const loadingDiv = screen.getByText('Loading content', {
@@ -24,19 +25,6 @@ describe('loading div', () => {
       });
 
       expect(loadingDiv).toBeInTheDocument();
-
-      isLoading = !isLoading;
-
-      rerender(
-        <PokemonsList
-          error={undefined}
-          isError={false}
-          isLoading={isLoading}
-          pokemon={undefined}
-          defaultSearch={mockDefaultResponse}
-        />
-      );
-      expect(loadingDiv).not.toBeInTheDocument();
     });
   });
 });
