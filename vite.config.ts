@@ -17,6 +17,10 @@ export default defineConfig({
         'src/index.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
+        'src/shared/api/*',
+        'src/shared/helpers/*',
+        'src/shared/lib/*',
+        'src/app/providers/router.tsx',
       ],
       thresholds: {
         global: {
