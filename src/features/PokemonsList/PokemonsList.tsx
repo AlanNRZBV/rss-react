@@ -1,10 +1,12 @@
 import PokemonsListItem from './PokemonsListItem.tsx';
 import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
 import { usePokemon } from '../../shared/hooks/usePokemon.ts';
+import type { DefaultResponse } from '../../types';
 
 const PokemonsList = () => {
   const { app } = usePokemon();
   const { isLoading, isError, defaultSearch, error, pokemon } = app;
+  const { previous } = defaultSearch as DefaultResponse;
 
   if (isError && error) {
     const { message, status } = error;
@@ -28,10 +30,10 @@ const PokemonsList = () => {
   }
 
   return (
-    <table className="w-full border border-black">
-      <thead className="border border-b-black">
+    <table className="mt-4 w-full border-collapse border border-gray-400">
+      <thead className="">
         <tr className="text-lg">
-          <th className="border border-r-black py-2">Name</th>
+          <th className="border-r border-r-gray-400 py-2">Name</th>
           <th>Description</th>
         </tr>
       </thead>
@@ -47,6 +49,19 @@ const PokemonsList = () => {
           <PokemonsListItemExtended pokemon={pokemon} />
         </tbody>
       )}
+      <caption className="caption-bottom">
+        <div className="mt-2 flex justify-center gap-2">
+          <button
+            className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400'}`}
+            disabled={previous === null}
+          >
+            previous
+          </button>
+          <button className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase">
+            next
+          </button>
+        </div>
+      </caption>
     </table>
   );
 };
