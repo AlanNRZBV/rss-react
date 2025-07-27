@@ -21,6 +21,7 @@ export default defineConfig({
         'src/shared/helpers/*',
         'src/shared/lib/*',
         'src/app/providers/router.tsx',
+        'src/main.tsx',
       ],
       thresholds: {
         global: {
