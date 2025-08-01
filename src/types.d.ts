@@ -13,7 +13,7 @@ declare type AppState = {
   pokemonDetailed: PokemonDetailed | undefined;
 };
 
-declare type PokemonContext = {
+declare type ThemeContext = {
   theme: 'light' | 'dark';
 };
 

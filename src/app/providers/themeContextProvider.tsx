@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { PokemonContext } from '../context/pokemonContext.ts';
+import { ThemeContext } from '../context/themeContext.ts';
 import { ActionsContext } from '../context/actionsContext.ts';
 
 export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -22,10 +22,10 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   return (
-    <PokemonContext.Provider value={value}>
+    <ThemeContext.Provider value={value}>
       <ActionsContext.Provider value={actions}>
         {children}
       </ActionsContext.Provider>
-    </PokemonContext.Provider>
+    </ThemeContext.Provider>
   );
 };

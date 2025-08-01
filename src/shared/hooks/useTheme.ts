@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { PokemonContext } from '../../app/context/pokemonContext.ts';
+import { ThemeContext } from '../../app/context/themeContext.ts';
 
 export const useTheme = () => {
-  const pokemonContext = useContext(PokemonContext);
+  const pokemonContext = useContext(ThemeContext);
   if (!pokemonContext) throw new Error('Using hook out of provider');
   return pokemonContext;
 };
