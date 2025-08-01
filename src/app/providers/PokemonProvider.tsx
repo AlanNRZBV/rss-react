@@ -79,7 +79,7 @@ export const PokemonProvider: FC<PropsWithChildren> = ({ children }) => {
           error: 'status' in res ? res : undefined,
           isLoading: false,
         }));
-        navigate(`${search}`);
+        navigate(`${search}`, { replace: true });
       } catch (e) {
         console.error('Caught on try - changePage - ', e);
         setApp((prevState) => ({

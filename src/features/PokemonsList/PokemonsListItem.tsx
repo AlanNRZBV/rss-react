@@ -17,6 +17,7 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
           onClick={toggleAndFetch}
           to={`details/${name}`}
           className="font-medium capitalize"
+          replace
         >
           {name}
         </NavLink>
