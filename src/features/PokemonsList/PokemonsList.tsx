@@ -1,38 +1,15 @@
 import PokemonsListItem from './PokemonsListItem.tsx';
 import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
-import { usePokemon } from '../../shared/hooks/usePokemon.ts';
-import type { DefaultResponse } from '../../types';
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 const PokemonsList = () => {
-  const { app } = usePokemon();
-  const { changePage } = usePokemonActions();
-  const { isLoading, isError, defaultSearch, error, pokemon } = app;
-  const { previous, next } = defaultSearch
-    ? (defaultSearch as DefaultResponse)
-    : { previous: null, next: null };
+  const defaultSearch = {
+    results: [],
+  };
 
-  if (isError && error) {
-    const { message, status } = error;
+  const pokemon = false;
+  const previous = false;
 
-    if (status === 404) {
-      return <div>Wrong pokemon name</div>;
-    }
-
-    return (
-      <div>
-        Something bad happen. Try to reload page
-        <div className="flex flex-col">
-          <span>Error status : {status}</span>
-          <span>Error message : {message}</span>
-        </div>
-      </div>
-    );
-  }
-  if (isLoading) {
-    return <div>Loading content</div>;
-  }
-
+  const changePage = () => {};
   return (
     <table className="mt-4 w-full border border-gray-400">
       <thead className="">
@@ -58,16 +35,15 @@ const PokemonsList = () => {
           <div className="mt-2 flex justify-center gap-2">
             <button
               onClick={() => {
-                changePage(previous);
+                changePage();
               }}
               className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400'}`}
-              disabled={previous === null}
             >
               previous
             </button>
             <button
               onClick={() => {
-                changePage(next);
+                changePage();
               }}
               className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase"
             >

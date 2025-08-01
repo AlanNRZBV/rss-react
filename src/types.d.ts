@@ -1,5 +1,3 @@
-import type { ChangeEvent, FormEvent } from 'react';
-
 declare type BasicError = {
   status: number;
   message: string;
@@ -16,16 +14,11 @@ declare type AppState = {
 };
 
 declare type PokemonContext = {
-  app: AppState;
-  detailedView: boolean;
+  theme: 'light' | 'dark';
 };
 
 declare type ActionsContext = {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  toggleView: () => void;
-  changePage: (arg: string | null | undefined) => void;
-  fetchDetailedHandle: (arg: string) => void;
+  toggleTheme: () => void;
 };
 
 declare type DefaultResponse = {

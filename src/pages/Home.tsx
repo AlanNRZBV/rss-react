@@ -1,10 +1,10 @@
 import SearchBar from '../features/SearchBar/SearchBar.tsx';
 import { Outlet } from 'react-router';
 import PokemonsList from '../features/PokemonsList/PokemonsList.tsx';
-import { usePokemon } from '../shared/hooks/usePokemon.ts';
+import { useTheme } from '../shared/hooks/useTheme.ts';
 
 const Home = () => {
-  const { detailedView } = usePokemon();
+  const { detailedView } = useTheme();
 
   return (
     <div className="flex h-full w-full">

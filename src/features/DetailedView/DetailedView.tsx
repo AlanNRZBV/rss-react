@@ -1,13 +1,13 @@
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
+import { useThemeActions } from '../../shared/hooks/useThemeActions.ts';
 import { useNavigate } from 'react-router';
-import { usePokemon } from '../../shared/hooks/usePokemon.ts';
+import { useTheme } from '../../shared/hooks/useTheme.ts';
 
 const DetailedView = () => {
   const navigate = useNavigate();
-  const { app } = usePokemon();
+  const { app } = useTheme();
   console.log(app);
   const { error, isError, isLoading, pokemonDetailed } = app;
-  const { toggleView } = usePokemonActions();
+  const { toggleView } = useThemeActions();
 
   const onClickHandler = () => {
     navigate(-1);

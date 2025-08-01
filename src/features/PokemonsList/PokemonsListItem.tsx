@@ -1,14 +1,9 @@
 import type { Pokemon } from '../../types';
 import type { FC } from 'react';
 import { NavLink } from 'react-router';
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
-  const { toggleView, fetchDetailedHandle } = usePokemonActions();
-  const toggleAndFetch = () => {
-    toggleView();
-    fetchDetailedHandle(name);
-  };
+  const toggleAndFetch = () => {};
 
   return (
     <tr className="border border-gray-400 not-even:bg-gray-100">

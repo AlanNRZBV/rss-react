@@ -1,11 +1,9 @@
 import { type FC } from 'react';
-import { usePokemon } from '../../shared/hooks/usePokemon.ts';
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
 
 const SearchBar: FC = () => {
-  const { app } = usePokemon();
-  const { onSubmit, onChange } = usePokemonActions();
-  const { search, isLoading } = app;
+  const onSubmit = () => {};
+  const changeHandle = () => {};
+  const isLoading = false;
 
   return (
     <form
@@ -23,8 +21,8 @@ const SearchBar: FC = () => {
             name="search"
             className="w-full py-2 focus:outline-none"
             placeholder="type here"
-            value={search}
-            onChange={onChange}
+            value={''}
+            onChange={changeHandle}
           />
         </div>
       </div>
