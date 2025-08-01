@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 
 const useLocalStorage = () => {
-  const [dataFromLs, setDataFromls] = useState<string | undefined>(undefined);
+  const [dataFromLs, setDataFromLs] = useState<string | undefined>(undefined);
   useEffect(() => {
     const valueFromStorage = localStorage.getItem('searchValue');
     if (valueFromStorage && valueFromStorage.trim().length > 0) {
-      setDataFromls(valueFromStorage);
+      setDataFromLs(valueFromStorage);
     }
   }, []);
 
   const setLocalState = (arg: string) => {
-    setDataFromls(arg);
+    setDataFromLs(arg);
     localStorage.setItem('searchValue', arg);
   };
 
   const resetLocalState = () => {
-    setDataFromls(undefined);
+    setDataFromLs(undefined);
     localStorage.removeItem('searchValue');
   };
 

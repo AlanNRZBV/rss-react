@@ -1,13 +1,35 @@
 import PokemonsListItem from './PokemonsListItem.tsx';
 import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
+import {
+  useGetPokemonByNameQuery,
+  useGetPokemonListQuery,
+} from '../../shared/api/pokemonApi.ts';
+import useLocalStorage from '../../shared/hooks/useLocalStorage.ts';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const PokemonsList = () => {
-  const defaultSearch = {
-    results: [],
-  };
+  const { dataFromLs } = useLocalStorage();
 
-  const pokemon = false;
+  const {
+    data: singleData,
+    isLoading: isSingleLoading,
+    error: singleError,
+  } = useGetPokemonByNameQuery(dataFromLs ?? skipToken);
+
+  const {
+    data: listData,
+    isLoading: isListLoading,
+    error: listError,
+  } = useGetPokemonListQuery(undefined, { skip: !!dataFromLs });
   const previous = false;
+
+  if (isSingleLoading || isListLoading) {
+    return <div>Loading</div>;
+  }
+
+  if (singleError || listError) {
+    return <div>error</div>;
+  }
 
   const changePage = () => {};
   return (
@@ -18,19 +40,19 @@ const PokemonsList = () => {
           <th>Description</th>
         </tr>
       </thead>
-      {defaultSearch && (
+      {listData && (
         <tbody>
-          {defaultSearch.results.map(({ name, url }, index) => (
+          {listData.results.map(({ name, url }, index) => (
             <PokemonsListItem key={index} name={name} url={url} />
           ))}
         </tbody>
       )}
-      {pokemon && (
+      {singleData && (
         <tbody>
-          <PokemonsListItemExtended pokemon={pokemon} />
+          <PokemonsListItemExtended pokemon={singleData} />
         </tbody>
       )}
-      {defaultSearch && (
+      {listData && (
         <caption className="caption-bottom">
           <div className="mt-2 flex justify-center gap-2">
             <button

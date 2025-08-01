@@ -5,7 +5,7 @@ declare type BasicError = {
 
 declare type AppState = {
   search: string;
-  defaultSearch: DefaultResponse | undefined;
+  defaultSearch: PokemonList | undefined;
   pokemon: PokemonExtended | undefined;
   isLoading: boolean;
   isError: boolean;
@@ -21,7 +21,7 @@ declare type ActionsContext = {
   toggleTheme: () => void;
 };
 
-declare type DefaultResponse = {
+declare type PokemonList = {
   count: number;
   next: string;
   previous: string | null;
