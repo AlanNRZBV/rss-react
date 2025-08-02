@@ -1,10 +1,11 @@
 import SearchBar from '../features/SearchBar/SearchBar.tsx';
-import { Outlet } from 'react-router';
 import PokemonsList from '../features/PokemonsList/PokemonsList.tsx';
-import { useTheme } from '../shared/hooks/useTheme.ts';
+import { useAppSelector } from '../app/providers/store.ts';
+import { selectDetailedView } from '../app/appSlice.ts';
+import { Outlet } from 'react-router';
 
 const Home = () => {
-  const { detailedView } = useTheme();
+  const detailedView = useAppSelector(selectDetailedView);
 
   return (
     <div className="flex h-full w-full">

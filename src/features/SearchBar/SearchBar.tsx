@@ -1,9 +1,58 @@
-import { type FC } from 'react';
+import {
+  type ChangeEvent,
+  type FC,
+  type FormEvent,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  useLazyGetPokemonByNameQuery,
+  useLazyGetPokemonListQuery,
+} from '../../shared/api/pokemonApi.ts';
+import useLocalStorage from '../../shared/hooks/useLocalStorage.ts';
+import { setSearchTerm } from './searchSlice.ts';
+import { useAppDispatch } from '../../app/providers/store.ts';
 
 const SearchBar: FC = () => {
-  const onSubmit = () => {};
-  const changeHandle = () => {};
-  const isLoading = false;
+  const [search, setSearch] = useState('');
+  const { setLocalState, dataFromLs, resetLocalState } = useLocalStorage();
+  const dispatch = useAppDispatch();
+  const [
+    triggerSingle,
+    { isLoading: isSingleLoading, isFetching: isSingleFetching },
+  ] = useLazyGetPokemonByNameQuery();
+  const [
+    triggerFetchList,
+    { isLoading: isListLoading, isFetching: isListFetching },
+  ] = useLazyGetPokemonListQuery();
+
+  useEffect(() => {
+    if (dataFromLs) {
+      setSearch(dataFromLs);
+    }
+  }, [dataFromLs]);
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const value = search.trim().toLowerCase();
+    if (value) {
+      setLocalState(value);
+      dispatch(setSearchTerm(search));
+      triggerSingle(search);
+      return;
+    }
+    resetLocalState();
+    console.log('data', search);
+    dispatch(setSearchTerm(search));
+    triggerFetchList(undefined);
+  };
+  const changeHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const isAnyLoading = isListLoading || isSingleLoading;
+  const isAnyFetching = isSingleFetching || isListFetching;
 
   return (
     <form
@@ -21,18 +70,18 @@ const SearchBar: FC = () => {
             name="search"
             className="w-full py-2 focus:outline-none"
             placeholder="type here"
-            value={''}
+            value={search}
             onChange={changeHandle}
           />
         </div>
       </div>
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isAnyFetching || isAnyLoading}
         className="flex items-center gap-0.5 self-end rounded-md border border-gray-400 bg-gray-100 px-4 py-2 font-medium uppercase"
       >
         <span>submit</span>
-        {isLoading && (
+        {(isAnyFetching || isAnyLoading) && (
           <svg
             className="mr-3 -ml-1 size-5 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"

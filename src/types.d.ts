@@ -3,16 +3,6 @@ declare type BasicError = {
   message: string;
 };
 
-declare type AppState = {
-  search: string;
-  defaultSearch: PokemonList | undefined;
-  pokemon: PokemonExtended | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: BasicError | undefined;
-  pokemonDetailed: PokemonDetailed | undefined;
-};
-
 declare type ThemeContext = {
   theme: 'light' | 'dark';
 };
