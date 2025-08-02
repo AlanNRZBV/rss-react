@@ -1,11 +1,35 @@
 import SearchBar from '../features/SearchBar/SearchBar.tsx';
 import PokemonsList from '../features/PokemonsList/PokemonsList.tsx';
-import { useAppSelector } from '../app/providers/store.ts';
-import { selectDetailedView } from '../app/appSlice.ts';
-import { Outlet } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../app/providers/store.ts';
+import { selectDetailedView, toggleView } from '../app/appSlice.ts';
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router';
+import { useEffect } from 'react';
 
 const Home = () => {
   const detailedView = useAppSelector(selectDetailedView);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+
+  const params = useParams();
+
+  useEffect(() => {
+    const isEmpty = params.name?.trim().length === 0;
+
+    if (params.name && !isEmpty) {
+      dispatch(toggleView('open'));
+    }
+    return;
+  }, [dispatch, params.name]);
+
+  useEffect(() => {
+    if (!detailedView && params.name) {
+      const queryString = searchParams.toString()
+        ? `?${searchParams.toString()}`
+        : '';
+      navigate(`/${queryString}`, { replace: true });
+    }
+  }, [detailedView, params.name, navigate, searchParams]);
 
   return (
     <div className="flex h-full w-full">

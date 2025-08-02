@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from './providers/store.ts';
 
 interface AppState {
@@ -13,8 +13,20 @@ const AppSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    toggleView: (state) => {
-      state.detailedView = !state.detailedView;
+    toggleView: (
+      state,
+      action: PayloadAction<'refetch' | 'close' | 'open'>
+    ) => {
+      const { payload } = action;
+      if (payload === 'refetch') {
+        return;
+      }
+
+      if (payload === 'close') {
+        state.detailedView = false;
+        return;
+      }
+      state.detailedView = true;
     },
   },
 });

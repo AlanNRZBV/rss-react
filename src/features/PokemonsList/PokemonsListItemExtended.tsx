@@ -1,6 +1,8 @@
 import type { FC } from 'react';
-import type { PokemonExtended } from '../../types';
-import { NavLink } from 'react-router';
+import { NavLink, useParams, useSearchParams } from 'react-router';
+import { useLazyGetDetailedPokemonByNameQuery } from '../../shared/api/pokemonApi.ts';
+import { useAppDispatch } from '../../app/providers/store.ts';
+import { toggleView } from '../../app/appSlice.ts';
 
 interface Props {
   pokemon: PokemonExtended;
@@ -8,14 +10,28 @@ interface Props {
 
 const PokemonsListItemExtended: FC<Props> = ({ pokemon }) => {
   const { name, height, order, weight } = pokemon;
-  const clickHandler = () => {};
+  const [trigger] = useLazyGetDetailedPokemonByNameQuery();
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const params = useParams();
+  const queryString = searchParams.toString()
+    ? `?${searchParams.toString()}`
+    : '';
+  const toggleAndFetch = () => {
+    if (name) {
+      trigger(name);
+      dispatch(toggleView(params.name ? 'refetch' : 'open'));
+    } else {
+      throw new Error('Unsupported data format');
+    }
+  };
   return (
     <tr className="border-t border-t-gray-400">
       <td className="flex justify-center">
         <div className="flex justify-center"></div>
         <NavLink
-          onClick={clickHandler}
-          to={`details/${name}`}
+          onClick={toggleAndFetch}
+          to={`/details/${name}${queryString}`}
           className="font-medium capitalize"
         >
           {name}

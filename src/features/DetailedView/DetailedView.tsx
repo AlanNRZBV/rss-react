@@ -1,20 +1,25 @@
-import { useThemeActions } from '../../shared/hooks/useThemeActions.ts';
-import { useNavigate } from 'react-router';
-import { useTheme } from '../../shared/hooks/useTheme.ts';
+import { useGetDetailedPokemonByNameQuery } from '../../shared/api/pokemonApi.ts';
+import { useParams } from 'react-router';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useAppDispatch } from '../../app/providers/store.ts';
+import { toggleView } from '../../app/appSlice.ts';
 
 const DetailedView = () => {
-  const navigate = useNavigate();
-  const { app } = useTheme();
-  console.log(app);
-  const { error, isError, isLoading, pokemonDetailed } = app;
-  const { toggleView } = useThemeActions();
+  const params = useParams();
+  const dispatch = useAppDispatch();
+
+  const { data, isFetching, isLoading, isError, error } =
+    useGetDetailedPokemonByNameQuery(params.name ?? skipToken);
 
   const onClickHandler = () => {
-    navigate(-1);
-    toggleView();
+    dispatch(toggleView('close'));
   };
 
-  if (!pokemonDetailed) {
+  if (isLoading || isFetching) {
+    return <div>Loading content</div>;
+  }
+
+  if (!data) {
     return (
       <div>
         <div>
@@ -32,13 +37,10 @@ const DetailedView = () => {
     );
   }
 
-  const { height, id, order, weight, name, base_experience, is_default } =
-    pokemonDetailed;
+  const { height, id, order, weight, name, base_experience, is_default } = data;
 
-  if (isError && error) {
-    const { message, status } = error;
-
-    if (status === 404) {
+  if (isError) {
+    if ('originalStatus' in error && error.originalStatus === 404) {
       return <div>Wrong pokemon name</div>;
     }
 
@@ -46,14 +48,11 @@ const DetailedView = () => {
       <div>
         Something bad happen. Try to reload page
         <div className="flex flex-col">
-          <span>Error status : {status}</span>
-          <span>Error message : {message}</span>
+          <span>Error status : </span>
+          <span>Error message : </span>
         </div>
       </div>
     );
-  }
-  if (isLoading) {
-    return <div>Loading content</div>;
   }
 
   return (

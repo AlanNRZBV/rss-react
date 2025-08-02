@@ -7,6 +7,9 @@ export const pokemonApi = createApi({
     getPokemonByName: build.query<PokemonExtended, string>({
       query: (name) => ({ url: `pokemon/${name}`, method: 'GET' }),
     }),
+    getDetailedPokemonByName: build.query<PokemonDetailed, string>({
+      query: (name) => ({ url: `pokemon/${name}`, method: 'GET' }),
+    }),
     getPokemonList: build.query<PokemonList, number | undefined>({
       query: (arg = 0) => ({
         url: `pokemon?offset=${arg}&limit=10`,
@@ -21,4 +24,6 @@ export const {
   useGetPokemonListQuery,
   useLazyGetPokemonByNameQuery,
   useLazyGetPokemonListQuery,
+  useLazyGetDetailedPokemonByNameQuery,
+  useGetDetailedPokemonByNameQuery,
 } = pokemonApi;

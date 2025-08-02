@@ -43,10 +43,10 @@ const SearchBar: FC = () => {
       return;
     }
     resetLocalState();
-    console.log('data', search);
     dispatch(setSearchTerm(search));
     triggerFetchList(undefined);
   };
+
   const changeHandle = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
