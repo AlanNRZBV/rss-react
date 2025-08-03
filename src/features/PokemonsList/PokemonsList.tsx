@@ -9,6 +9,9 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { selectCurrentSearchTerm } from '../SearchBar/searchSlice.ts';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { useAppSelector } from '../../app/providers/store.ts';
+import { selectPokemons } from './pokemonSlice.ts';
 
 const PokemonsList = () => {
   const { dataFromLs } = useLocalStorage();
@@ -19,6 +22,8 @@ const PokemonsList = () => {
     : undefined;
   const queryArg = currentSearchTerm ?? dataFromLs ?? skipToken;
 
+  const test = useAppSelector(selectPokemons);
+  console.log(test);
   const {
     data: singleData,
     isLoading: isSingleLoading,
@@ -83,7 +88,10 @@ const PokemonsList = () => {
     <table className="mt-4 w-full border border-gray-400">
       <thead className="bg-gray-100 dark:bg-gray-800">
         <tr className="text-lg dark:text-gray-300">
-          <th className="border-r border-r-gray-400 py-2">Name</th>
+          <th>
+            <CheckIcon className="mx-auto h-[16px]" />
+          </th>
+          <th className="border-x border-x-gray-400 py-2">Name</th>
           <th>Description</th>
         </tr>
       </thead>

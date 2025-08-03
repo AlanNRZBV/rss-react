@@ -3,12 +3,14 @@ import { pokemonApi } from '../../shared/api/pokemonApi.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchReducer } from '../../features/SearchBar/searchSlice.ts';
 import { appReducer } from '../appSlice.ts';
+import { pokemonReducer } from '../../features/PokemonsList/pokemonSlice.ts';
 
 export const store = configureStore({
   reducer: {
     [pokemonApi.reducerPath]: pokemonApi.reducer,
     search: searchReducer,
     app: appReducer,
+    pokemons: pokemonReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(pokemonApi.middleware),
