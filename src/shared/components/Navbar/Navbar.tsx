@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="mb-8 border-b border-b-gray-400 pb-4">
+    <div data-testid="navbar" className="mb-8 border-b border-b-gray-400 pb-4">
       <div className="flex items-center gap-4">
         <NavLink
           onClick={() => {

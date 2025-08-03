@@ -6,6 +6,7 @@ import { ThemeContext } from './context/themeContext.ts';
 import { useAppDispatch, useAppSelector } from './providers/store.ts';
 import {
   clearPokemons,
+  exportToCSV,
   selectPokemons,
 } from '../features/PokemonsList/pokemonSlice.ts';
 
@@ -21,6 +22,9 @@ const App = () => {
 
   const clearPokemonsHandle = () => {
     dispatch(clearPokemons());
+  };
+  const downloadHandle = () => {
+    dispatch(exportToCSV());
   };
 
   return (
@@ -42,7 +46,10 @@ const App = () => {
                 >
                   deselect all
                 </button>
-                <button className="rounded-md border px-4 py-2 uppercase dark:border-gray-500 dark:text-gray-300">
+                <button
+                  onClick={downloadHandle}
+                  className="rounded-md border px-4 py-2 uppercase dark:border-gray-500 dark:text-gray-300"
+                >
                   download
                 </button>
               </div>

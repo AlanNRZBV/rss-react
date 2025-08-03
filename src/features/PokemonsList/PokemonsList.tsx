@@ -10,8 +10,6 @@ import { selectCurrentSearchTerm } from '../SearchBar/searchSlice.ts';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router';
 import { CheckIcon } from '@heroicons/react/24/outline';
-import { useAppSelector } from '../../app/providers/store.ts';
-import { selectPokemons } from './pokemonSlice.ts';
 
 const PokemonsList = () => {
   const { dataFromLs } = useLocalStorage();
@@ -22,8 +20,6 @@ const PokemonsList = () => {
     : undefined;
   const queryArg = currentSearchTerm ?? dataFromLs ?? skipToken;
 
-  const test = useAppSelector(selectPokemons);
-  console.log(test);
   const {
     data: singleData,
     isLoading: isSingleLoading,
@@ -33,8 +29,6 @@ const PokemonsList = () => {
     skip: !currentSearchTerm && !dataFromLs,
     refetchOnMountOrArgChange: true,
   });
-
-  console.log(currentSearchTerm);
 
   const {
     data: listData,
