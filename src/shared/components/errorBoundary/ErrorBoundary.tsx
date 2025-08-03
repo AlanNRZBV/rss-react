@@ -34,10 +34,10 @@ class ErrorBoundary extends React.Component<Props, State> {
     }
 
     return (
-      <div className="flex h-full flex-col dark:bg-gray-900">
+      <div className="relative flex h-full flex-col">
         {this.props.children}
         <button
-          className="mt-2 self-end rounded-md border border-black bg-red-200 px-4 py-2"
+          className="absolute right-2 bottom-2 mt-2 self-end rounded-md border border-black bg-red-200 px-4 py-2"
           onClick={this.handleClick}
         >
           Trigger Error

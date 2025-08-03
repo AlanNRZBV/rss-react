@@ -112,7 +112,7 @@ const PokemonsList = () => {
           <div className="mt-2 flex justify-center gap-2">
             <button
               onClick={() => changePage('prev')}
-              className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400 dark:border-black dark:text-black'}`}
+              className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black dark:border-gray-400 dark:text-gray-400' : 'border-gray-400 text-gray-400 dark:border-black dark:text-black'}`}
             >
               previous
             </button>

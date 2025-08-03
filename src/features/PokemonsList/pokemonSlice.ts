@@ -27,9 +27,13 @@ const pokemonSlice = createSlice({
         state.pokemons = state.pokemons.filter((p) => p.name !== name);
       }
     },
+    clearPokemons: (state) => {
+      state.pokemons = [];
+    },
   },
 });
 
-export const { addPokemon, removePokemon } = pokemonSlice.actions;
+export const { addPokemon, removePokemon, clearPokemons } =
+  pokemonSlice.actions;
 export const pokemonReducer = pokemonSlice.reducer;
 export const selectPokemons = (state: RootState) => state.pokemons.pokemons;
