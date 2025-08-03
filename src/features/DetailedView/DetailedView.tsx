@@ -16,17 +16,17 @@ const DetailedView = () => {
   };
 
   if (isLoading || isFetching) {
-    return <div>Loading content</div>;
+    return <div className="dark:text-gray-300">Loading content</div>;
   }
 
   if (!data) {
     return (
-      <div>
+      <div className="dark:text-gray-300">
         <div>
           <button
             type="button"
             name="viewToggle"
-            className="uppercase"
+            className="uppercase dark:text-gray-300"
             onClick={onClickHandler}
           >
             close
@@ -61,17 +61,17 @@ const DetailedView = () => {
         <button
           type="button"
           name="viewToggle"
-          className="rounded-md border border-gray-400 px-4 py-2 uppercase"
+          className="rounded-md border border-gray-400 px-4 py-2 uppercase dark:text-gray-300"
           onClick={onClickHandler}
         >
           close
         </button>
       </div>
       <div>
-        <p>
+        <p className="dark:text-gray-300">
           <b className="font-bold capitalize">{name}</b> detailed data
         </p>
-        <ul>
+        <ul className="dark:text-gray-300">
           <li>Id: {id}</li>
           <li>Name: {name}</li>
           <li>Exp: {base_experience}</li>

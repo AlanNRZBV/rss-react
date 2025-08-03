@@ -25,9 +25,11 @@ const PokemonsList = () => {
     isFetching: isSingleFetching,
     error: singleError,
   } = useGetPokemonByNameQuery(queryArg, {
-    skip: !currentSearchTerm,
+    skip: !currentSearchTerm && !dataFromLs,
     refetchOnMountOrArgChange: true,
   });
+
+  console.log(currentSearchTerm);
 
   const {
     data: listData,
@@ -52,14 +54,14 @@ const PokemonsList = () => {
   const isAnyFetching = isSingleFetching || isListFetching;
 
   if (isAnyLoading || isAnyFetching) {
-    return <div>Loading</div>;
+    return <div className="dark:text-gray-300">Loading</div>;
   }
 
   if (singleError) {
-    return <div>Ошибка поиска покемона </div>;
+    return <div className="dark:text-gray-300">Ошибка поиска покемона </div>;
   }
   if (listError) {
-    return <div>Ошибка загрузки списка</div>;
+    return <div className="dark:text-gray-300">Ошибка загрузки списка</div>;
   }
 
   const changePage = (direction: 'next' | 'prev') => {
@@ -79,8 +81,8 @@ const PokemonsList = () => {
   };
   return (
     <table className="mt-4 w-full border border-gray-400">
-      <thead className="">
-        <tr className="text-lg">
+      <thead className="bg-gray-100 dark:bg-gray-800">
+        <tr className="text-lg dark:text-gray-300">
           <th className="border-r border-r-gray-400 py-2">Name</th>
           <th>Description</th>
         </tr>
@@ -102,13 +104,13 @@ const PokemonsList = () => {
           <div className="mt-2 flex justify-center gap-2">
             <button
               onClick={() => changePage('prev')}
-              className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400'}`}
+              className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black' : 'border-gray-400 text-gray-400 dark:border-black dark:text-black'}`}
             >
               previous
             </button>
             <button
               onClick={() => changePage('next')}
-              className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase"
+              className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase dark:border-gray-400 dark:text-gray-400"
             >
               next
             </button>

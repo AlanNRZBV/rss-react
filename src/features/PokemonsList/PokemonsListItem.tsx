@@ -23,12 +23,12 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
   };
 
   return (
-    <tr className="border border-gray-400 not-even:bg-gray-100">
+    <tr className="border border-gray-400 not-even:bg-gray-100 dark:not-even:bg-gray-800">
       <td className="flex justify-center px-2 py-1">
         <NavLink
           onClick={toggleAndFetch}
           to={`/details/${name}${queryString}`}
-          className="font-medium capitalize"
+          className="font-medium capitalize dark:text-gray-300"
           replace
         >
           {name}

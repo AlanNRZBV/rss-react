@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 const About = () => {
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex h-full w-full flex-col dark:text-gray-400">
       <ul>
         <li>
           <b className="mr-2">Author:</b>

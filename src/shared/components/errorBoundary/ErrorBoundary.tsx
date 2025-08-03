@@ -34,7 +34,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     }
 
     return (
-      <div className="flex flex-col">
+      <div className="flex h-full flex-col dark:bg-gray-900">
         {this.props.children}
         <button
           className="mt-2 self-end rounded-md border border-black bg-red-200 px-4 py-2"

@@ -36,7 +36,7 @@ const SearchBar: FC = () => {
     e.preventDefault();
     e.stopPropagation();
     const value = search.trim().toLowerCase();
-    if (value) {
+    if (value && value !== '') {
       setLocalState(value);
       dispatch(setSearchTerm(search));
       triggerSingle(search);
@@ -57,10 +57,10 @@ const SearchBar: FC = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8"
+      className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8 dark:border-b-gray-400"
     >
       <div className="flex basis-1/2 flex-col gap-2">
-        <label htmlFor="search" className="text-xl">
+        <label htmlFor="search" className="text-xl dark:text-gray-300">
           Search
         </label>
         <div className="rounded-md border border-gray-400 pl-4">
@@ -68,7 +68,7 @@ const SearchBar: FC = () => {
             type="text"
             id="search"
             name="search"
-            className="w-full py-2 focus:outline-none"
+            className="w-full py-2 focus:outline-none dark:text-gray-100 dark:placeholder-gray-600"
             placeholder="type here"
             value={search}
             onChange={changeHandle}

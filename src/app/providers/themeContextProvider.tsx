@@ -6,14 +6,15 @@ import {
   useState,
 } from 'react';
 import { ThemeContext } from '../context/themeContext.ts';
-import { ActionsContext } from '../context/actionsContext.ts';
+import { ThemeActionsContext } from '../context/themeActionsContext.ts';
 
 export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light' | null>('dark');
   const toggleTheme = useCallback(() => {
     setTheme((prevState) => (prevState === 'light' ? 'dark' : 'light'));
   }, []);
-  const value = useMemo(() => ({ theme }), [theme]);
+
+  const value = useMemo(() => theme, [theme]);
   const actions = useMemo(
     () => ({
       toggleTheme,
@@ -23,9 +24,9 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={value}>
-      <ActionsContext.Provider value={actions}>
+      <ThemeActionsContext.Provider value={actions}>
         {children}
-      </ActionsContext.Provider>
+      </ThemeActionsContext.Provider>
     </ThemeContext.Provider>
   );
 };

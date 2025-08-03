@@ -7,7 +7,7 @@ declare type ThemeContext = {
   theme: 'light' | 'dark';
 };
 
-declare type ActionsContext = {
+declare type ThemeActionsContext = {
   toggleTheme: () => void;
 };
 
