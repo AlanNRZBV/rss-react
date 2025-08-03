@@ -1,19 +1,66 @@
-import { type FC } from 'react';
-import { usePokemon } from '../../shared/hooks/usePokemon.ts';
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
+import {
+  type ChangeEvent,
+  type FC,
+  type FormEvent,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  useLazyGetPokemonByNameQuery,
+  useLazyGetPokemonListQuery,
+} from '../../shared/api/pokemonApi.ts';
+import useLocalStorage from '../../shared/hooks/useLocalStorage.ts';
+import { setSearchTerm } from './searchSlice.ts';
+import { useAppDispatch } from '../../app/providers/store.ts';
 
 const SearchBar: FC = () => {
-  const { app } = usePokemon();
-  const { onSubmit, onChange } = usePokemonActions();
-  const { search, isLoading } = app;
+  const [search, setSearch] = useState('');
+  const { setLocalState, dataFromLs, resetLocalState } = useLocalStorage();
+  const dispatch = useAppDispatch();
+  const [
+    triggerSingle,
+    { isLoading: isSingleLoading, isFetching: isSingleFetching },
+  ] = useLazyGetPokemonByNameQuery();
+  const [
+    triggerFetchList,
+    { isLoading: isListLoading, isFetching: isListFetching },
+  ] = useLazyGetPokemonListQuery();
+
+  useEffect(() => {
+    if (dataFromLs) {
+      setSearch(dataFromLs);
+    }
+  }, [dataFromLs]);
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const value = search.trim().toLowerCase();
+    if (value && value !== '') {
+      setLocalState(value);
+      dispatch(setSearchTerm(search));
+      triggerSingle(search);
+      return;
+    }
+    resetLocalState();
+    dispatch(setSearchTerm(search));
+    triggerFetchList(undefined);
+  };
+
+  const changeHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const isAnyLoading = isListLoading || isSingleLoading;
+  const isAnyFetching = isSingleFetching || isListFetching;
 
   return (
     <form
       onSubmit={onSubmit}
-      className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8"
+      className="flex items-center gap-2 border-b-2 border-b-black px-4 pt-2 pb-8 dark:border-b-gray-400"
     >
       <div className="flex basis-1/2 flex-col gap-2">
-        <label htmlFor="search" className="text-xl">
+        <label htmlFor="search" className="text-xl dark:text-gray-300">
           Search
         </label>
         <div className="rounded-md border border-gray-400 pl-4">
@@ -21,20 +68,20 @@ const SearchBar: FC = () => {
             type="text"
             id="search"
             name="search"
-            className="w-full py-2 focus:outline-none"
+            className="w-full py-2 focus:outline-none dark:text-gray-100 dark:placeholder-gray-600"
             placeholder="type here"
             value={search}
-            onChange={onChange}
+            onChange={changeHandle}
           />
         </div>
       </div>
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isAnyFetching || isAnyLoading}
         className="flex items-center gap-0.5 self-end rounded-md border border-gray-400 bg-gray-100 px-4 py-2 font-medium uppercase"
       >
         <span>submit</span>
-        {isLoading && (
+        {(isAnyFetching || isAnyLoading) && (
           <svg
             className="mr-3 -ml-1 size-5 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"

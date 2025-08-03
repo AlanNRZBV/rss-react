@@ -1,34 +1,17 @@
-import type { ChangeEvent, FormEvent } from 'react';
-
 declare type BasicError = {
   status: number;
   message: string;
 };
 
-declare type AppState = {
-  search: string;
-  defaultSearch: DefaultResponse | undefined;
-  pokemon: PokemonExtended | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: BasicError | undefined;
-  pokemonDetailed: PokemonDetailed | undefined;
+declare type ThemeContext = {
+  theme: 'light' | 'dark';
 };
 
-declare type PokemonContext = {
-  app: AppState;
-  detailedView: boolean;
+declare type ThemeActionsContext = {
+  toggleTheme: () => void;
 };
 
-declare type ActionsContext = {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  toggleView: () => void;
-  changePage: (arg: string | null | undefined) => void;
-  fetchDetailedHandle: (arg: string) => void;
-};
-
-declare type DefaultResponse = {
+declare type PokemonList = {
   count: number;
   next: string;
   previous: string | null;

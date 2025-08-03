@@ -1,27 +1,32 @@
-import { usePokemonActions } from '../../shared/hooks/usePokemonActions.ts';
-import { useNavigate } from 'react-router';
-import { usePokemon } from '../../shared/hooks/usePokemon.ts';
+import { useGetDetailedPokemonByNameQuery } from '../../shared/api/pokemonApi.ts';
+import { useParams } from 'react-router';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useAppDispatch } from '../../app/providers/store.ts';
+import { toggleView } from '../../app/appSlice.ts';
 
 const DetailedView = () => {
-  const navigate = useNavigate();
-  const { app } = usePokemon();
-  console.log(app);
-  const { error, isError, isLoading, pokemonDetailed } = app;
-  const { toggleView } = usePokemonActions();
+  const params = useParams();
+  const dispatch = useAppDispatch();
+
+  const { data, isFetching, isLoading, isError, error } =
+    useGetDetailedPokemonByNameQuery(params.name ?? skipToken);
 
   const onClickHandler = () => {
-    navigate(-1);
-    toggleView();
+    dispatch(toggleView('close'));
   };
 
-  if (!pokemonDetailed) {
+  if (isLoading || isFetching) {
+    return <div className="dark:text-gray-300">Loading content</div>;
+  }
+
+  if (!data) {
     return (
-      <div>
+      <div className="dark:text-gray-300">
         <div>
           <button
             type="button"
             name="viewToggle"
-            className="uppercase"
+            className="uppercase dark:text-gray-300"
             onClick={onClickHandler}
           >
             close
@@ -32,13 +37,10 @@ const DetailedView = () => {
     );
   }
 
-  const { height, id, order, weight, name, base_experience, is_default } =
-    pokemonDetailed;
+  const { height, id, order, weight, name, base_experience, is_default } = data;
 
-  if (isError && error) {
-    const { message, status } = error;
-
-    if (status === 404) {
+  if (isError) {
+    if ('originalStatus' in error && error.originalStatus === 404) {
       return <div>Wrong pokemon name</div>;
     }
 
@@ -46,14 +48,11 @@ const DetailedView = () => {
       <div>
         Something bad happen. Try to reload page
         <div className="flex flex-col">
-          <span>Error status : {status}</span>
-          <span>Error message : {message}</span>
+          <span>Error status : </span>
+          <span>Error message : </span>
         </div>
       </div>
     );
-  }
-  if (isLoading) {
-    return <div>Loading content</div>;
   }
 
   return (
@@ -62,17 +61,17 @@ const DetailedView = () => {
         <button
           type="button"
           name="viewToggle"
-          className="rounded-md border border-gray-400 px-4 py-2 uppercase"
+          className="rounded-md border border-gray-400 px-4 py-2 uppercase dark:text-gray-300"
           onClick={onClickHandler}
         >
           close
         </button>
       </div>
       <div>
-        <p>
+        <p className="dark:text-gray-300">
           <b className="font-bold capitalize">{name}</b> detailed data
         </p>
-        <ul>
+        <ul className="dark:text-gray-300">
           <li>Id: {id}</li>
           <li>Name: {name}</li>
           <li>Exp: {base_experience}</li>

@@ -1,11 +1,4 @@
-import type {
-  BasicError,
-  DefaultResponse,
-  PokemonDetailed,
-  PokemonExtended,
-} from '../types';
-
-export const mockDefaultResponse: DefaultResponse = {
+export const mockDefaultResponse: PokemonList = {
   count: 1302,
   next: 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20',
   previous: null,

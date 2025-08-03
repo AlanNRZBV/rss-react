@@ -9,27 +9,14 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
-        index: true,
-        Component: Home,
-      },
-      {
-        path: '/details',
+        path: '/',
         Component: Home,
         children: [
           {
-            path: ':name',
-            Component: DetailedView,
-          },
-        ],
-      },
-      {
-        path: ':name',
-        Component: Home,
-        children: [
-          {
-            path: 'extended',
+            path: 'details/:name',
             Component: DetailedView,
           },
         ],
