@@ -11,6 +11,7 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
   const pokemons = useAppSelector(selectPokemons);
   const isChecked = pokemons.some((p) => p.name === name);
   const [searchParams] = useSearchParams();
+
   const params = useParams();
   const queryString = searchParams.toString()
     ? `?${searchParams.toString()}`
@@ -35,14 +36,14 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
 
   return (
     <tr className="border border-gray-400 not-even:bg-gray-100 dark:not-even:bg-gray-800">
-      <td className="border border-gray-400 text-center">
+      <td className="text-center">
         <input
           onChange={handleCheckboxChange}
           checked={isChecked}
           type="checkbox"
         />
       </td>
-      <td className="flex justify-center px-2 py-1">
+      <td className="flex justify-center border-x border-x-gray-400 px-2 py-1">
         <NavLink
           onClick={toggleAndFetch}
           to={`/details/${name}${queryString}`}
@@ -53,7 +54,7 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
         </NavLink>
       </td>
       <td>
-        <a href={url} className="text-blue-400">
+        <a href={url} className="ml-2 text-blue-400">
           {url}
         </a>
       </td>
