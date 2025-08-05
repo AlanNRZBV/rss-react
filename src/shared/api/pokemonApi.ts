@@ -5,6 +5,7 @@ export const pokemonApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://pokeapi.co/api/v2/',
   }),
+  tagTypes: ['POKEMON_LIST'],
   endpoints: (build) => ({
     getPokemonByName: build.query<PokemonExtended, string>({
       query: (name) => ({ url: `pokemon/${name}`, method: 'GET' }),
@@ -17,6 +18,7 @@ export const pokemonApi = createApi({
         url: `pokemon?offset=${arg}&limit=10`,
         method: 'GET',
       }),
+      providesTags: ['POKEMON_LIST'],
     }),
   }),
 });
