@@ -10,20 +10,15 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     clearMocks: true,
+    setupFiles: ['src/test-utils/setupTests.tsx'],
     coverage: {
       include: ['/src/**/*.{js,jsx,ts,tsx}'],
-
       exclude: [
         'src/**/*.test.{js,jsx,ts,tsx}',
         'src/**/*.spec.{js,jsx,ts,tsx}',
         'src/index.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
-        'src/shared/api/*',
-        'src/shared/helpers/*',
-        'src/shared/lib/*',
-        'src/app/providers/router.tsx',
-        'src/main.tsx',
       ],
       thresholds: {
         global: {
