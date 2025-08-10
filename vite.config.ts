@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [tailwindcss(), react()],
   base: '/rss-react/',
+  build: { outDir: 'docs' },
   test: {
     globals: true,
     environment: 'jsdom',
