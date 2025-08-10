@@ -29,7 +29,10 @@ const App = () => {
 
   return (
     <ErrorBoundary message="Error occured">
-      <div className="flex h-full w-full flex-col px-8 py-4 dark:bg-gray-900">
+      <div
+        data-testid="app-wrapper"
+        className="flex h-full w-full flex-col px-8 py-4 dark:bg-gray-900"
+      >
         <Navbar />
         <Outlet />
         {!isEmpty && (

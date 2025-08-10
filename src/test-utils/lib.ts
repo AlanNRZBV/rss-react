@@ -1,6 +1,6 @@
-export const mockDefaultResponse: PokemonList = {
+export const mockPokemonList: PokemonList = {
   count: 1302,
-  next: 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20',
+  next: 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=10',
   previous: null,
   results: [
     {
@@ -43,46 +43,6 @@ export const mockDefaultResponse: PokemonList = {
       name: 'caterpie',
       url: 'https://pokeapi.co/api/v2/pokemon/10/',
     },
-    {
-      name: 'metapod',
-      url: 'https://pokeapi.co/api/v2/pokemon/11/',
-    },
-    {
-      name: 'butterfree',
-      url: 'https://pokeapi.co/api/v2/pokemon/12/',
-    },
-    {
-      name: 'weedle',
-      url: 'https://pokeapi.co/api/v2/pokemon/13/',
-    },
-    {
-      name: 'kakuna',
-      url: 'https://pokeapi.co/api/v2/pokemon/14/',
-    },
-    {
-      name: 'beedrill',
-      url: 'https://pokeapi.co/api/v2/pokemon/15/',
-    },
-    {
-      name: 'pidgey',
-      url: 'https://pokeapi.co/api/v2/pokemon/16/',
-    },
-    {
-      name: 'pidgeotto',
-      url: 'https://pokeapi.co/api/v2/pokemon/17/',
-    },
-    {
-      name: 'pidgeot',
-      url: 'https://pokeapi.co/api/v2/pokemon/18/',
-    },
-    {
-      name: 'rattata',
-      url: 'https://pokeapi.co/api/v2/pokemon/19/',
-    },
-    {
-      name: 'raticate',
-      url: 'https://pokeapi.co/api/v2/pokemon/20/',
-    },
   ],
 };
 
@@ -101,17 +61,4 @@ export const mockPokemonDetailed: PokemonDetailed = {
   id: 1,
   base_experience: 333,
   is_default: false,
-};
-
-export const mockApiFailError: BasicError = {
-  status: 0,
-  message: 'Network error',
-};
-export const mockApiNotFoundError: BasicError = {
-  status: 404,
-  message: 'Not found',
-};
-export const mockApiServerError: BasicError = {
-  status: 500,
-  message: 'Server error',
 };

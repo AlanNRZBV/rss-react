@@ -1,6 +1,7 @@
 import PokemonsListItem from './PokemonsListItem.tsx';
 import PokemonsListItemExtended from './PokemonsListItemExtended.tsx';
 import {
+  pokemonApi,
   useGetPokemonByNameQuery,
   useGetPokemonListQuery,
 } from '../../shared/api/pokemonApi.ts';
@@ -10,10 +11,12 @@ import { selectCurrentSearchTerm } from '../SearchBar/searchSlice.ts';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router';
 import { CheckIcon } from '@heroicons/react/24/outline';
+import { useAppDispatch } from '../../app/providers/store.ts';
 
 const PokemonsList = () => {
   const { dataFromLs } = useLocalStorage();
   const currentSearchTerm = useSelector(selectCurrentSearchTerm);
+  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const offset = searchParams.get('offset')
     ? parseInt(searchParams.get('offset') as string, 10)
@@ -57,10 +60,10 @@ const PokemonsList = () => {
   }
 
   if (singleError) {
-    return <div className="dark:text-gray-300">Ошибка поиска покемона </div>;
+    return <div className="dark:text-gray-300">Pokemon search error</div>;
   }
   if (listError) {
-    return <div className="dark:text-gray-300">Ошибка загрузки списка</div>;
+    return <div className="dark:text-gray-300">Pokemon list error</div>;
   }
 
   const changePage = (direction: 'next' | 'prev') => {
@@ -104,6 +107,38 @@ const PokemonsList = () => {
       {!hasSingleData && listData && (
         <caption className="caption-bottom">
           <div className="mt-2 flex justify-center gap-2">
+            <button
+              onClick={() => {
+                dispatch(pokemonApi.util.invalidateTags(['POKEMON_LIST']));
+              }}
+              className="mr-auto flex gap-2 rounded-md border border-black px-4 py-2 text-base font-medium uppercase dark:border-gray-400 dark:text-gray-400"
+              disabled={isListLoading || isListFetching}
+            >
+              <span>refresh</span>
+              {isListLoading ||
+                (isListFetching && (
+                  <svg
+                    className="size-5 animate-spin"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="black"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="black"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ))}
+            </button>
             <button
               onClick={() => changePage('prev')}
               className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black dark:border-gray-400 dark:text-gray-400' : 'border-gray-400 text-gray-400 dark:border-black dark:text-black'}`}
