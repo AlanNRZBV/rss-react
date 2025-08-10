@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, Tuple } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { pokemonApi } from '../../shared/api/pokemonApi.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchReducer } from '../../features/SearchBar/searchSlice.ts';
@@ -16,7 +16,7 @@ export function setupStore(preloadedState?: Partial<RootState>) {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      new Tuple(...getDefaultMiddleware().concat(pokemonApi.middleware)),
+      getDefaultMiddleware().concat(pokemonApi.middleware),
     preloadedState: preloadedState,
   });
 }
