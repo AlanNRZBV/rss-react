@@ -2,6 +2,6 @@
 html,
 body,
 #root {
-  height: 100%;
+    height: 100%;
 }
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

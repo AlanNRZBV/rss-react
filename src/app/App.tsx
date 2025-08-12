@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router';
 import ErrorBoundary from '../shared/components/errorBoundary/ErrorBoundary.tsx';
 import Navbar from '../shared/components/Navbar/Navbar.tsx';
 import { useContext, useEffect } from 'react';
@@ -34,7 +33,6 @@ const App = () => {
         className="flex h-full w-full flex-col px-8 py-4 dark:bg-gray-900"
       >
         <Navbar />
-        <Outlet />
         {!isEmpty && (
           <div className="mt-2 self-center rounded-md border px-8 py-4 dark:border-gray-300 dark:bg-gray-800">
             <div className="flex flex-col items-center gap-2 dark:text-gray-400">
