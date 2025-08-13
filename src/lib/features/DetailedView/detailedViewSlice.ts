@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from './providers/store.ts';
+import type { RootState } from '../../store.ts';
 
 interface AppState {
   detailedView: boolean;
@@ -9,7 +9,7 @@ const initialState: AppState = {
   detailedView: false,
 };
 
-const AppSlice = createSlice({
+const DetailedViewSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
@@ -31,6 +31,6 @@ const AppSlice = createSlice({
   },
 });
 
-export const { toggleView } = AppSlice.actions;
-export const appReducer = AppSlice.reducer;
+export const { toggleView } = DetailedViewSlice.actions;
+export const appReducer = DetailedViewSlice.reducer;
 export const selectDetailedView = (state: RootState) => state.app.detailedView;

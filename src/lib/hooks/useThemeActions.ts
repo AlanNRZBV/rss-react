@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeActionsContext } from '../../app/context/themeActionsContext.ts';
+import { ThemeActionsContext } from '@/lib/context/themeActionsContext.ts';
 
 export const useThemeActions = () => {
   const actionsContext = useContext(ThemeActionsContext);

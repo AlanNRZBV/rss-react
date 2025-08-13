@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../../app/context/themeContext.ts';
+import { ThemeContext } from '@/lib/context/themeContext.ts';
 
 export const useTheme = () => {
   const pokemonContext = useContext(ThemeContext);
