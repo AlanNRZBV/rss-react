@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "search": "Поиск",
+    "searchPlaceholder": "пиши здесь",
+    "searchSubmitBtn": "искать",
+    "navHome": "Главная",
+    "navAbout": "Обо мне",
+    "tableName": "имя",
+    "tableDesc": "описание"
+  }
+}

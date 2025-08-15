@@ -1,17 +1,17 @@
 'use client';
-import Link from 'next/link';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { toggleView } from '@/lib/features/DetailedView/detailedViewSlice.ts';
-import { usePathname } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks.ts';
 import { useThemeActions } from '@/lib/hooks/useThemeActions.ts';
 import { useTheme } from '@/lib/hooks/useTheme.ts';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation.ts';
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
+  const t = useTranslations('HomePage');
   const actions = useThemeActions();
   const theme = useTheme();
-  const pathname = usePathname();
 
   const toggleHandle = () => {
     actions.toggleTheme();
@@ -25,19 +25,12 @@ const Navbar = () => {
             dispatch(toggleView('close'));
           }}
           href="/"
-          className={
-            pathname === '/' ? 'font-bold text-blue-500' : 'text-gray-600'
-          }
+          className="dark:text-gray-300"
         >
-          Home
+          {t('navHome')}
         </Link>
-        <Link
-          href="/about"
-          className={
-            pathname === '/about' ? 'font-bold text-blue-500' : 'text-gray-600'
-          }
-        >
-          About
+        <Link className="dark:text-gray-300" href="/about">
+          {t('navAbout')}
         </Link>
         <button
           type="button"

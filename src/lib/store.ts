@@ -1,14 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { pokemonApi } from '@/lib/api/pokemonApi.ts';
-import { searchReducer } from '../features/SearchBar/searchSlice.ts';
-import { appReducer } from './features/DetailedView/detailedViewSlice.ts';
-import { pokemonReducer } from '../features/PokemonsList/pokemonSlice.ts';
+import { searchReducer } from '@/lib/features/SearchBar/searchBarSlice.ts';
+import { pokemonsReducer } from '@/lib/features/PokemonsList/pokemonsSlice.ts';
 
 const rootReducer = combineReducers({
   [pokemonApi.reducerPath]: pokemonApi.reducer,
   search: searchReducer,
-  app: appReducer,
-  pokemons: pokemonReducer,
+  pokemons: pokemonsReducer,
 });
 
 export function setupStore() {

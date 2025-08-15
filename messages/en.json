@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "search": "search",
+    "searchPlaceholder": "type here",
+    "searchSubmitBtn": "submit",
+    "navHome": "home",
+    "navAbout": "about",
+    "tableName": "name",
+    "tableDesc": "description"
+
+  }
+}
