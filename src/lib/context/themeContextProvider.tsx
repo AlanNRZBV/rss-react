@@ -10,14 +10,21 @@ import {
 import { ThemeContext } from './themeContext.ts';
 import { ThemeActionsContext } from './themeActionsContext.ts';
 
+enum Theme {
+  Dark = 'dark',
+  Light = 'light',
+}
+
 export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [theme, setTheme] = useState<'dark' | 'light' | null>('dark');
+  const [theme, setTheme] = useState<Theme | null>(Theme.Dark);
   const toggleTheme = useCallback(() => {
-    setTheme((prevState) => (prevState === 'light' ? 'dark' : 'light'));
+    setTheme((prevState) =>
+      prevState === Theme.Light ? Theme.Dark : Theme.Light
+    );
   }, []);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme ? theme : 'dark');
+    document.documentElement.setAttribute('data-theme', theme ?? Theme.Dark);
   }, [theme]);
 
   const value = useMemo(() => theme, [theme]);
