@@ -1,0 +1,16 @@
+{
+  "HomePage": {
+    "search": "Поиск",
+    "searchPlaceholder": "пиши здесь",
+    "searchSubmitBtn": "искать",
+    "navHome": "Главная",
+    "navAbout": "Обо мне",
+    "tableName": "имя",
+    "tableDesc": "описание",
+    "controlRefresh": "обновить кэш",
+    "controlPrev": "назад",
+            "controlNext": "вперед",
+    "listName": "имя",
+    "listDesc": "описание"
+  }
+}

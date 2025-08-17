@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "search": "search",
+    "searchPlaceholder": "type here",
+    "searchSubmitBtn": "submit",
+    "navHome": "home",
+    "navAbout": "about",
+    "tableName": "name",
+    "tableDesc": "description",
+    "controlRefresh": "refresh",
+    "controlPrev": "previous",
+    "controlNext": "next",
+    "listName": "name",
+    "listDesc": "description"
+
+  }
+}
