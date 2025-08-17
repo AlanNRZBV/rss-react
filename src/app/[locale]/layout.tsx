@@ -39,7 +39,7 @@ const RootLayout: FC<Props> = async ({ children, params, details, list }) => {
               >
                 <Navbar />
                 {children}
-                <div className="flex border border-amber-600">
+                <div className="flex">
                   <div className="grow">{list}</div>
                   <>{details}</>
                 </div>
