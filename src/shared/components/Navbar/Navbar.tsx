@@ -4,6 +4,7 @@ import { useThemeActions } from '@/lib/hooks/useThemeActions.ts';
 import { useTheme } from '@/lib/hooks/useTheme.ts';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation.ts';
+import LangSwitcher from '@/shared/components/LangSwitcher/LangSwitcher.tsx';
 
 const Navbar = () => {
   const t = useTranslations('HomePage');
@@ -17,12 +18,13 @@ const Navbar = () => {
   return (
     <div data-testid="navbar" className="mb-8 border-b border-b-gray-400 pb-4">
       <div className="flex items-center gap-4">
-        <Link href="/" className="dark:text-gray-300">
+        <Link href="/" className="capitalize dark:text-gray-300">
           {t('navHome')}
         </Link>
-        <Link className="dark:text-gray-300" href="/about">
+        <Link className="capitalize dark:text-gray-300" href="/about">
           {t('navAbout')}
         </Link>
+        <LangSwitcher />
         <button
           type="button"
           className="ml-auto h-[24px] w-[24-px] cursor-pointer text-black dark:border-gray-400 dark:text-gray-300"

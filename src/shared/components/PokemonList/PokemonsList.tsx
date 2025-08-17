@@ -11,8 +11,10 @@ import { selectCurrentSearchTerm } from '@/lib/features/SearchBar/searchBarSlice
 import PokemonsListItem from '@/shared/components/PokemonList/PokemonsListItem.tsx';
 import { useSearchParams } from 'next/navigation';
 import PokemonListControls from '@/shared/components/PokemonList/PokemonListControls.tsx';
+import { useTranslations } from 'next-intl';
 
 const PokemonsList = () => {
+  const t = useTranslations('HomePage');
   const { dataFromLs } = useLocalStorage();
   const currentSearchTerm = useSelector(selectCurrentSearchTerm);
   const searchParams = useSearchParams();
@@ -59,12 +61,12 @@ const PokemonsList = () => {
   return (
     <table className="mt-4 w-full border border-gray-400">
       <thead className="bg-gray-100 dark:bg-gray-800">
-        <tr className="text-lg dark:text-gray-300">
+        <tr className="text-lg capitalize dark:text-gray-300">
           <th>
             <CheckIcon className="mx-auto h-[16px]" />
           </th>
-          <th className="border-x border-x-gray-400 py-2">Name</th>
-          <th>Description</th>
+          <th className="border-x border-x-gray-400 py-2">{t('listName')}</th>
+          <th>{t('listDesc')}</th>
         </tr>
       </thead>
       {!hasSingleData && listData && (

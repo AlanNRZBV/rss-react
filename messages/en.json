@@ -6,7 +6,12 @@
     "navHome": "home",
     "navAbout": "about",
     "tableName": "name",
-    "tableDesc": "description"
+    "tableDesc": "description",
+    "controlRefresh": "refresh",
+    "controlPrev": "previous",
+    "controlNext": "next",
+    "listName": "name",
+    "listDesc": "description"
 
   }
 }

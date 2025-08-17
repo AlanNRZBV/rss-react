@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { pokemonApi } from '@/lib/api/pokemonApi.ts';
 import { useAppDispatch } from '@/lib/hooks.ts';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   currentSearchTerm: string | undefined;
@@ -20,6 +21,7 @@ const PokemonListControls: FC<Props> = ({
   hasSingleData,
   listData,
 }) => {
+  const t = useTranslations('HomePage');
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -70,7 +72,7 @@ const PokemonListControls: FC<Props> = ({
           className="mr-auto flex gap-2 rounded-md border border-black px-4 py-2 text-base font-medium uppercase dark:border-gray-400 dark:text-gray-400"
           disabled={isListLoading || isListFetching}
         >
-          <span>refresh</span>
+          <span>{t('controlRefresh')}</span>
           {isListLoading ||
             (isListFetching && (
               <svg
@@ -99,13 +101,13 @@ const PokemonListControls: FC<Props> = ({
           onClick={() => changePage('prev')}
           className={`rounded-md border px-4 py-2 text-base font-medium uppercase ${previous ? 'border-black text-black dark:border-gray-400 dark:text-gray-400' : 'border-gray-400 text-gray-400 dark:border-black dark:text-black'}`}
         >
-          previous
+          {t('controlPrev')}
         </button>
         <button
           onClick={() => changePage('next')}
           className="rounded-md border border-black px-4 py-2 text-base font-medium uppercase dark:border-gray-400 dark:text-gray-400"
         >
-          next
+          {t('controlNext')}
         </button>
       </div>
     </caption>

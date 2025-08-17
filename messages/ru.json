@@ -6,6 +6,11 @@
     "navHome": "Главная",
     "navAbout": "Обо мне",
     "tableName": "имя",
-    "tableDesc": "описание"
+    "tableDesc": "описание",
+    "controlRefresh": "обновить кэш",
+    "controlPrev": "назад",
+            "controlNext": "вперед",
+    "listName": "имя",
+    "listDesc": "описание"
   }
 }
