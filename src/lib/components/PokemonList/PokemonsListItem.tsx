@@ -1,5 +1,5 @@
 'use client';
-import { Link } from '@/i18n/navigation';
+import { Link } from '@/i18n/navigation.ts';
 import type { ChangeEvent, FC } from 'react';
 import { useLazyGetDetailedPokemonByNameQuery } from '@/lib/api/pokemonApi.ts';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks.ts';

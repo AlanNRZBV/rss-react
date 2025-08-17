@@ -1,6 +1,6 @@
 'use client';
 import { ChangeEvent } from 'react';
-import { routing } from '@/i18n/routing';
+import { routing } from '@/i18n/routing.ts';
 import { redirect } from '@/i18n/navigation.ts';
 import { useLocale } from 'next-intl'; // Import routing
 

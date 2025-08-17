@@ -8,9 +8,9 @@ import {
 } from '@/lib/api/pokemonApi.ts';
 import useLocalStorage from '@/lib/hooks/useLocalStorage.ts';
 import { selectCurrentSearchTerm } from '@/lib/features/SearchBar/searchBarSlice.ts';
-import PokemonsListItem from '@/shared/components/PokemonList/PokemonsListItem.tsx';
+import PokemonsListItem from '@/lib/components/PokemonList/PokemonsListItem.tsx';
 import { useSearchParams } from 'next/navigation';
-import PokemonListControls from '@/shared/components/PokemonList/PokemonListControls.tsx';
+import PokemonListControls from '@/lib/components/PokemonList/PokemonListControls.tsx';
 import { useTranslations } from 'next-intl';
 
 const PokemonsList = () => {

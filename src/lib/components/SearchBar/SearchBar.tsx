@@ -14,7 +14,7 @@ import {
   useLazyGetPokemonListQuery,
 } from '@/lib/api/pokemonApi.ts';
 import { setSearchTerm } from '@/lib/features/SearchBar/searchBarSlice.ts';
-import CustomButton from '@/shared/components/CustomButton/CustomButton.tsx';
+import CustomButton from '@/lib/components/CustomButton/CustomButton.tsx';
 
 const SearchBar: FC = () => {
   const [search, setSearch] = useState('');

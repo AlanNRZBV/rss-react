@@ -4,7 +4,7 @@ import { useThemeActions } from '@/lib/hooks/useThemeActions.ts';
 import { useTheme } from '@/lib/hooks/useTheme.ts';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation.ts';
-import LangSwitcher from '@/shared/components/LangSwitcher/LangSwitcher.tsx';
+import LangSwitcher from '@/lib/components/LangSwitcher/LangSwitcher.tsx';
 import { toggleView } from '@/lib/features/DetailedView/detailedViewSlice.ts';
 import { useAppDispatch } from '@/lib/hooks.ts';
 
@@ -25,7 +25,7 @@ const Navbar = () => {
           onClick={() => {
             dispatch(toggleView('close'));
           }}
-          href="/"
+          href="/public"
           className="capitalize dark:text-gray-300"
         >
           {t('navHome')}

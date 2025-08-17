@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import '../../globals.css';
 import StoreProvider from '@/lib/providers/StoreProvider.tsx';
-import Navbar from '@/shared/components/Navbar/Navbar.tsx';
+import Navbar from '@/lib/components/Navbar/Navbar.tsx';
 import { ThemeContextProvider } from '@/lib/context/themeContextProvider.tsx';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { routing } from '@/i18n/routing.ts';
