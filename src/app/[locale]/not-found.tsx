@@ -1,11 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation.ts';
 
 const NotFound = () => {
   return (
     <div className="dark:text-gray-400">
       Custom 404 page. Nothing to do here.
-      <Link href="/public">Return Home</Link>
+      <Link href="/">Return Home</Link>
     </div>
   );
 };

@@ -8,7 +8,11 @@ import {
   removePokemon,
   selectPokemons,
 } from '@/lib/features/PokemonsList/pokemonsSlice.ts';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
+import {
+  selectDetailedView,
+  toggleView,
+} from '@/lib/features/DetailedView/detailedViewSlice.ts';
 
 interface Props {
   pokemonExtended?: PokemonExtended;
@@ -18,8 +22,10 @@ interface Props {
 const PokemonsListItem: FC<Props> = ({ pokemonExtended, pokemon }) => {
   const [trigger] = useLazyGetDetailedPokemonByNameQuery();
   const dispatch = useAppDispatch();
+  const detailedView = useAppSelector(selectDetailedView);
   const pokemons = useAppSelector(selectPokemons);
   const searchParams = useSearchParams();
+  const params = useParams();
 
   if (!pokemonExtended && !pokemon) {
     return (
@@ -56,6 +62,7 @@ const PokemonsListItem: FC<Props> = ({ pokemonExtended, pokemon }) => {
   const toggleAndFetch = () => {
     if (name) {
       trigger(name);
+      dispatch(toggleView(params.slug && detailedView ? 'refetch' : 'open'));
     } else {
       throw new Error('Unsupported data format');
     }
@@ -82,7 +89,7 @@ const PokemonsListItem: FC<Props> = ({ pokemonExtended, pokemon }) => {
       <td className="flex justify-center border-x border-x-gray-400 px-2 py-1">
         <Link
           onClick={toggleAndFetch}
-          href={`/details/${actualName}${queryString}`}
+          href={`/${actualName}${queryString}`}
           className="dark:text-gray-400"
         >
           {actualName}

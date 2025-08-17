@@ -1,21 +1,34 @@
 'use client';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { notFound, useParams, useRouter } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { useGetDetailedPokemonByNameQuery } from '@/lib/api/pokemonApi.ts';
+import { redirect } from '@/i18n/navigation.ts';
+import { useLocale } from 'next-intl';
+import {
+  selectDetailedView,
+  toggleView,
+} from '@/lib/features/DetailedView/detailedViewSlice.ts';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks.ts';
 
 const DetailedView = () => {
   const params = useParams();
-  const router = useRouter();
+  const currentLocale = useLocale();
+  const dispatch = useAppDispatch();
+  const detailedView = useAppSelector(selectDetailedView);
 
   const { data, isFetching, isLoading, isError, error } =
     useGetDetailedPokemonByNameQuery((params.slug as string) ?? skipToken);
+  if (!detailedView) {
+    return null;
+  }
 
   if (!params.slug) {
     notFound();
   }
 
   const onClickHandler = () => {
-    router.back();
+    dispatch(toggleView('close'));
+    redirect({ href: '/', locale: currentLocale });
   };
 
   if (isLoading || isFetching) {
