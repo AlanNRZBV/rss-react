@@ -4,12 +4,10 @@ import PokemonsList from '@/shared/components/PokemonList/PokemonsList.tsx';
 
 const Page = () => {
   return (
-    <div className="flex h-full w-full">
-      <div className="grow">
-        <SearchBar />
-        <PokemonsList />
-      </div>
-    </div>
+    <>
+      <SearchBar />
+      <PokemonsList />
+    </>
   );
 };
 
