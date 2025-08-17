@@ -52,7 +52,7 @@ const PokemonsListItem: FC<Pokemon> = ({ name, url }) => {
       <td className="flex justify-center border-x border-x-gray-400 px-2 py-1">
         <Link
           onClick={toggleAndFetch}
-          href={`/details/${name}${queryString}`}
+          href={`/${name}${queryString}`}
           className="dark:text-gray-400"
         >
           {name}

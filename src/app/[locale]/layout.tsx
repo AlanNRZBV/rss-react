@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import '../../globals.css';
 import StoreProvider from '@/lib/providers/StoreProvider.tsx';
 import Navbar from '@/shared/components/Navbar/Navbar.tsx';
@@ -10,9 +10,11 @@ import { setRequestLocale } from 'next-intl/server';
 
 interface Props extends PropsWithChildren {
   params: Promise<{ locale: string }>;
+  details: ReactNode;
+  list: ReactNode;
 }
 
-const RootLayout: FC<Props> = async ({ children, params }) => {
+const RootLayout: FC<Props> = async ({ children, params, details, list }) => {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -37,6 +39,8 @@ const RootLayout: FC<Props> = async ({ children, params }) => {
               >
                 <Navbar />
                 {children}
+                {details}
+                {list}
               </div>
             </StoreProvider>
           </ThemeContextProvider>

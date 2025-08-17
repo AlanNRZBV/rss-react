@@ -32,5 +32,6 @@ const DetailedViewSlice = createSlice({
 });
 
 export const { toggleView } = DetailedViewSlice.actions;
-export const appReducer = DetailedViewSlice.reducer;
-export const selectDetailedView = (state: RootState) => state.app.detailedView;
+export const detailedViewReducer = DetailedViewSlice.reducer;
+export const selectDetailedView = (state: RootState) =>
+  state.detailedView.detailedView;
