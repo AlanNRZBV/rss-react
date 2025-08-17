@@ -1,7 +1,5 @@
-import React from 'react';
-
 const Default = () => {
-  return <div>list default</div>;
+  return null;
 };
 
 export default Default;

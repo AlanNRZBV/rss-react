@@ -82,7 +82,7 @@ const PokemonsListItem: FC<Props> = ({ pokemonExtended, pokemon }) => {
       <td className="flex justify-center border-x border-x-gray-400 px-2 py-1">
         <Link
           onClick={toggleAndFetch}
-          href={`/${actualName}${queryString}`}
+          href={`/details/${actualName}${queryString}`}
           className="dark:text-gray-400"
         >
           {actualName}

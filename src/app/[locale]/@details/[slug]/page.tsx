@@ -1,6 +1,6 @@
 'use client';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useParams, useRouter } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import { useGetDetailedPokemonByNameQuery } from '@/lib/api/pokemonApi.ts';
 
 const DetailedView = () => {
@@ -9,6 +9,10 @@ const DetailedView = () => {
 
   const { data, isFetching, isLoading, isError, error } =
     useGetDetailedPokemonByNameQuery((params.slug as string) ?? skipToken);
+
+  if (!params.slug) {
+    notFound();
+  }
 
   const onClickHandler = () => {
     router.back();
