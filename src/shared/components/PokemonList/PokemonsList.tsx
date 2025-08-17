@@ -9,7 +9,6 @@ import {
 import useLocalStorage from '@/lib/hooks/useLocalStorage.ts';
 import { selectCurrentSearchTerm } from '@/lib/features/SearchBar/searchBarSlice.ts';
 import PokemonsListItem from '@/shared/components/PokemonList/PokemonsListItem.tsx';
-import PokemonsListItemExtended from '@/shared/components/PokemonList/PokemonsListItemExtended.tsx';
 import { useSearchParams } from 'next/navigation';
 import PokemonListControls from '@/shared/components/PokemonList/PokemonListControls.tsx';
 
@@ -70,14 +69,14 @@ const PokemonsList = () => {
       </thead>
       {!hasSingleData && listData && (
         <tbody>
-          {listData.results.map(({ name, url }, index) => (
-            <PokemonsListItem key={index} name={name} url={url} />
+          {listData.results.map((item, index) => (
+            <PokemonsListItem key={index} pokemon={item} />
           ))}
         </tbody>
       )}
       {hasSingleData && singleData && (
         <tbody>
-          <PokemonsListItemExtended pokemon={singleData} />
+          <PokemonsListItem pokemonExtended={singleData} />
         </tbody>
       )}
       <PokemonListControls
