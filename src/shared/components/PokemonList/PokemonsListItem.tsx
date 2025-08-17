@@ -69,11 +69,11 @@ const PokemonsListItem: FC<Props> = ({ pokemonExtended, pokemon }) => {
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      dispatch(addPokemon(actualNameObj));
-    } else {
-      dispatch(removePokemon(actualName));
-    }
+    const action = e.target.checked
+      ? addPokemon(actualNameObj)
+      : removePokemon(actualName);
+
+    dispatch(action);
   };
 
   return (

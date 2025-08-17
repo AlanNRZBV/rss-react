@@ -60,15 +60,7 @@ const DetailedView = () => {
       return <div>Wrong pokemon name</div>;
     }
 
-    return (
-      <div>
-        Something bad happen. Try to reload page
-        <div className="flex flex-col">
-          <span>Error status : </span>
-          <span>Error message : </span>
-        </div>
-      </div>
-    );
+    return <div>Something bad happen. Try to reload page</div>;
   }
 
   return (
