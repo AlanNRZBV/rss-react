@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import clsx from 'clsx';
 
 interface CustomButtonProps {
   text: string;
@@ -13,11 +12,9 @@ const CustomButton: FC<CustomButtonProps> = ({
   onClick,
   disabled,
 }) => {
-  const baseClasses =
-    'rounded-md text-base font-medium cursor-pointer uppercase border px-4 py-2 flex gap-2 items-center';
   return (
     <button
-      className={clsx(baseClasses)}
+      className="flex cursor-pointer items-center gap-2 rounded-lg border bg-white px-4 py-2 text-base font-medium uppercase transition-all delay-75 ease-in-out hover:border-blue-700 hover:bg-blue-500 hover:text-white"
       disabled={disabled}
       onClick={onClick}
       type={type}
