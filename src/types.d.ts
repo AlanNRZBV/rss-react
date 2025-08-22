@@ -7,7 +7,11 @@ declare type FormDataDisplay = {
   gender: string;
   age: number;
   tAndC: boolean;
-  images: File | FileList | null;
+  images: string | string[] | null;
   country: string;
   lastModified: string | null;
+};
+
+declare type UserInputData = Omit<FormDataDisplay, 'images'> & {
+  images: File | File[] | null;
 };

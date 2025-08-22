@@ -16,7 +16,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   return (
     <button
       className={twMerge(
-        "'flex hover:text-white' cursor-pointer items-center gap-2 rounded-lg border bg-white px-4 py-2 text-base font-medium uppercase transition-all delay-75 ease-in-out hover:border-blue-700 hover:bg-blue-500",
+        "'flex hover:text-white' cursor-pointer items-center gap-2 rounded-lg border bg-white px-4 py-2 text-base font-medium uppercase transition-all delay-75 ease-in-out hover:border-blue-700 hover:bg-blue-500 hover:text-white",
         className
       )}
       disabled={disabled}

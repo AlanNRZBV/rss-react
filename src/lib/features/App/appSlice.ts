@@ -1,31 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@/lib/providers/store.ts';
 
 interface AppState {
-  controlled: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    gender: string;
-    age: number;
-    tAndC: boolean;
-    images: File | FileList | null;
-    country: string;
-    lastModified: string | null;
-  };
-  uncontrolled: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    gender: string;
-    age: number;
-    tAndC: boolean;
-    images: File | FileList | null;
-    country: string;
-    lastModified: string | null;
-  };
+  controlled: FormDataDisplay;
+  uncontrolled: FormDataDisplay;
 }
 
 const initialState: AppState = {
@@ -58,8 +36,17 @@ const initialState: AppState = {
 export const appSlice = createSlice({
   name: 'app',
   initialState,
-  reducers: {},
+  reducers: {
+    updateUncontrolledState: (
+      state,
+      action: PayloadAction<FormDataDisplay>
+    ) => {
+      state.uncontrolled = { ...state.uncontrolled, ...action.payload };
+    },
+  },
 });
+
+export const { updateUncontrolledState } = appSlice.actions;
 export const appReducer = appSlice.reducer;
 export const selectControlledState = (state: RootState) => state.app.controlled;
 export const selectUncontrolledState = (state: RootState) =>
