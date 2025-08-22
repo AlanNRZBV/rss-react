@@ -1,0 +1,64 @@
+import type { ChangeEvent, FC, InputHTMLAttributes } from 'react';
+
+interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  isError?: boolean;
+  errorText?: string;
+  label: string;
+  value?: string | number;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const CustomInput: FC<CustomInputProps> = ({
+  name,
+  type,
+  label,
+  placeholder,
+  isError,
+  errorText,
+  id,
+  readOnly,
+  value,
+  onChange,
+}) => {
+  return (
+    <div className="flex flex-col">
+      <label
+        htmlFor={name}
+        className="mb-2 text-lg font-medium capitalize select-none"
+      >
+        {label}
+      </label>
+      {type === 'checkbox' ? (
+        <div className="flex items-center gap-4 px-2 py-1">
+          <input
+            onChange={onChange}
+            className="h-[18px] w-[18px] checked:ring-2 checked:ring-blue-500"
+            placeholder={placeholder}
+            id={id}
+            name={name}
+            type={type}
+            readOnly={readOnly}
+            value={value}
+          />
+          <span className="font-medium">Accept</span>
+        </div>
+      ) : (
+        <div className="transition-color flex rounded-md border border-black bg-gray-100 px-2 py-1 duration-150 focus-within:ring focus-within:ring-blue-500">
+          <input
+            className="grow outline-0"
+            placeholder={placeholder}
+            id={id}
+            name={name}
+            type={type}
+            readOnly={readOnly}
+          />
+        </div>
+      )}
+      <div className={`${isError ? 'visible' : 'invisible'}`}>
+        <span>{errorText}</span>
+      </div>
+    </div>
+  );
+};
+
+export default CustomInput;

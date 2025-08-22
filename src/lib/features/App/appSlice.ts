@@ -10,6 +10,9 @@ interface AppState {
     gender: string;
     age: number;
     tAndC: boolean;
+    images: File | FileList | null;
+    country: string;
+    lastModified: string | null;
   };
   uncontrolled: {
     name: string;
@@ -19,6 +22,9 @@ interface AppState {
     gender: string;
     age: number;
     tAndC: boolean;
+    images: File | FileList | null;
+    country: string;
+    lastModified: string | null;
   };
 }
 
@@ -31,6 +37,9 @@ const initialState: AppState = {
     gender: '',
     age: 0,
     tAndC: false,
+    country: '',
+    images: null,
+    lastModified: null,
   },
   uncontrolled: {
     name: '',
@@ -40,6 +49,9 @@ const initialState: AppState = {
     gender: '',
     age: 0,
     tAndC: false,
+    country: '',
+    images: null,
+    lastModified: null,
   },
 };
 

@@ -1,7 +1,19 @@
-import { type FC, type PropsWithChildren } from 'react';
-const Column: FC<PropsWithChildren> = ({ children }) => {
+import { type FC, type HTMLAttributes, type PropsWithChildren } from 'react';
+import { twMerge } from 'tailwind-merge';
+
+interface ColumnProps
+  extends PropsWithChildren,
+    HTMLAttributes<HTMLDivElement> {}
+
+const Column: FC<ColumnProps> = ({ children, className, ...props }) => {
   return (
-    <div className="rounded-xl border border-black bg-gray-100 p-4">
+    <div
+      className={twMerge(
+        'rounded-xl border border-black bg-gray-100 p-4',
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );
