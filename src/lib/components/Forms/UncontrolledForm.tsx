@@ -4,20 +4,39 @@ import { COUNTRIES } from '@/lib/static/countries.ts';
 import CustomSelect from '@/lib/ui/CustomSelect/CustomSelect.tsx';
 import { GENDERS } from '@/lib/static/genders.ts';
 import CustomButton from '@/lib/ui/CustomButton/CustomButton.tsx';
-import { type FormEvent, useRef } from 'react';
+import { type FC, type FormEvent, useRef, useState } from 'react';
 import { useAppDispatch } from '@/lib/providers/store.ts';
 import { updateUncontrolledState } from '@/lib/features/App/appSlice.ts';
 import { getNow } from '@/lib/utils/getNow.ts';
+import { formSchema } from '@/lib/validation/schema.ts';
 
-const UncontrolledForm = () => {
+interface UncontrolledFormProps {
+  onSuccess: () => void;
+}
+
+const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSuccess }) => {
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLFormElement>(null);
-
+  const [formErrors, setFormErrors] = useState<{
+    [key: string]: string | undefined;
+  }>({});
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formRef.current) {
       const formData = new FormData(formRef.current);
       const rawData = Object.fromEntries(formData.entries());
+      const result = await formSchema.safeParseAsync(rawData);
+
+      if (!result.success) {
+        const errorMap: { [key: string]: string } = {};
+        result.error.issues.forEach((issue) => {
+          const field = issue.path[0] as string;
+          errorMap[field] = issue.message;
+        });
+        setFormErrors(errorMap);
+        return;
+      }
+
       const typedData: FormDataDisplay = {
         name: (rawData.name as string) || '',
         email: (rawData.email as string) || '',
@@ -25,7 +44,7 @@ const UncontrolledForm = () => {
         confirmPassword: (rawData.confirmPassword as string) || '',
         gender: (rawData.gender as string) || '',
         age: Number(rawData.age) || 0,
-        tAndC: !!rawData.tAndC,
+        termsAndConditions: !!rawData.termsAndConditions,
         country: (rawData.country as string) || '',
         lastModified: getNow(),
         images: null,
@@ -45,6 +64,7 @@ const UncontrolledForm = () => {
         }
       }
       dispatch(updateUncontrolledState(typedData));
+      onSuccess();
     }
   };
 
@@ -59,6 +79,8 @@ const UncontrolledForm = () => {
             name="name"
             placeholder="Enter your name"
             id="name"
+            isError={!!formErrors.name}
+            errorText={formErrors.name}
           />
           <CustomInput
             label="email"
@@ -66,6 +88,8 @@ const UncontrolledForm = () => {
             name="email"
             placeholder="Enter your email"
             id="email"
+            isError={!!formErrors.email}
+            errorText={formErrors.email}
           />
           <CustomInput
             type="number"
@@ -73,6 +97,8 @@ const UncontrolledForm = () => {
             name="age"
             placeholder="Enter your age"
             id="age"
+            isError={!!formErrors.age}
+            errorText={formErrors.age}
           />
           <CustomInput
             type="password"
@@ -80,6 +106,8 @@ const UncontrolledForm = () => {
             name="password"
             placeholder="Enter your password"
             id="password"
+            isError={!!formErrors.password}
+            errorText={formErrors.password}
           />
           <CustomInput
             type="password"
@@ -87,6 +115,8 @@ const UncontrolledForm = () => {
             id="confirm-password"
             name="confirmPassword"
             placeholder="Enter your name"
+            isError={!!formErrors.confirmPassword}
+            errorText={formErrors.confirmPassword}
           />
           <CustomInput
             type="checkbox"
@@ -94,6 +124,8 @@ const UncontrolledForm = () => {
             id="tems-and-conditions"
             name="termsAndConditions"
             placeholder="Enter your name"
+            isError={!!formErrors.tAndC}
+            errorText={formErrors.tAndC}
           />
           <CustomInput
             type="file"
@@ -102,6 +134,8 @@ const UncontrolledForm = () => {
             name="images"
             placeholder="Upload your images"
             accept="image/png, image/jpeg, image/jpg"
+            isError={!!formErrors.images}
+            errorText={formErrors.images}
           />
           <CustomAutocompleteSelect
             label="Select country"
@@ -110,12 +144,16 @@ const UncontrolledForm = () => {
             options={COUNTRIES}
             autoComplete="on"
             placeholder="Select country"
+            isError={!!formErrors.country}
+            errorText={formErrors.country}
           />
           <CustomSelect
             label="gender"
             name="gender"
             id="gender"
             options={GENDERS}
+            isError={!!formErrors.gender}
+            errorText={formErrors.gender}
           />
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">

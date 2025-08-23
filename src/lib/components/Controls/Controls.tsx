@@ -39,7 +39,7 @@ const Controls = () => {
             {modalType === 'controlled' ? (
               <ControlledForm />
             ) : (
-              <UncontrolledForm />
+              <UncontrolledForm onSuccess={handleClose} />
             )}
           </CustomModal>,
           modalRoot

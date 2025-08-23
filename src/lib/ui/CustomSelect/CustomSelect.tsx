@@ -3,9 +3,18 @@ import { type FC, type SelectHTMLAttributes } from 'react';
 interface CustomSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   options: CustomSelectOption[];
+  isError?: boolean;
+  errorText?: string;
 }
 
-const CustomSelect: FC<CustomSelectProps> = ({ name, label, id, options }) => {
+const CustomSelect: FC<CustomSelectProps> = ({
+  name,
+  label,
+  id,
+  options,
+  isError,
+  errorText,
+}) => {
   return (
     <div className="flex flex-col">
       <label
@@ -22,6 +31,9 @@ const CustomSelect: FC<CustomSelectProps> = ({ name, label, id, options }) => {
             </option>
           ))}
         </select>
+      </div>
+      <div className={`${isError ? 'visible' : 'invisible'}`}>
+        <span className="text-sm text-red-400">{errorText}</span>
       </div>
     </div>
   );

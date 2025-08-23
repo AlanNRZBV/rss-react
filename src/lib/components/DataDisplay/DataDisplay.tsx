@@ -2,30 +2,42 @@ import { type FC } from 'react';
 interface DataDisplayProps {
   data: FormDataDisplay;
 }
+
+type FieldConfigItem<K extends keyof FormDataDisplay> = {
+  key: K;
+  label: string;
+  format?: (arg: FormDataDisplay[K]) => string;
+};
+
+const fieldConfig: FieldConfigItem<keyof FormDataDisplay>[] = [
+  { key: 'name', label: 'name' },
+  { key: 'email', label: 'email' },
+  { key: 'age', label: 'age' },
+  { key: 'password', label: 'password' },
+  { key: 'confirmPassword', label: 'confirm password' },
+  { key: 'gender', label: 'gender' },
+  { key: 'country', label: 'country' },
+  { key: 'images', label: 'images' },
+  {
+    key: 'termsAndConditions',
+    label: 'terms and conditions',
+    format: (arg) => (arg ? 'accepted' : 'not accepted'),
+  },
+  {
+    key: 'lastModified',
+    label: 'last modified',
+    format: (arg) => (arg ? String(arg) : 'never'),
+  },
+] as const;
+
 const DataDisplay: FC<DataDisplayProps> = ({ data }) => {
-  const {
-    name,
-    email,
-    age,
-    password,
-    confirmPassword,
-    gender,
-    country,
-    tAndC,
-    lastModified,
-  } = data;
   return (
     <ul>
-      <li>name: {name}</li>
-      <li>email: {email}</li>
-      <li>age: {age}</li>
-      <li>password: {password}</li>
-      <li>confirm password: {confirmPassword}</li>
-      <li>gender: {gender}</li>
-      <li>country: {country}</li>
-      <li>images: ---</li>
-      <li>terms and conditions: {tAndC ? 'accepted' : 'not accepted'}</li>
-      <li>last modified: {lastModified ? lastModified : 'never'}</li>
+      {fieldConfig.map(({ key, label, format }) => (
+        <li key={key}>
+          {label}: {format ? format(data[key]) : data[key]}
+        </li>
+      ))}
     </ul>
   );
 };

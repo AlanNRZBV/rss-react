@@ -5,6 +5,8 @@ interface CustomAutocompleteSelectProps
   options: CustomSelectOption[];
   placeholder?: string;
   autoComplete?: string;
+  isError?: boolean;
+  errorText?: string;
 }
 
 const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
@@ -15,6 +17,8 @@ const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
   autoComplete,
   placeholder,
   type,
+  isError,
+  errorText,
 }) => {
   return (
     <div className="flex flex-col">
@@ -39,6 +43,9 @@ const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
             <option key={index} value={item.name} />
           ))}
         </datalist>
+      </div>
+      <div className={`${isError ? 'visible' : 'invisible'}`}>
+        <span className="text-sm text-red-400">{errorText}</span>
       </div>
     </div>
   );

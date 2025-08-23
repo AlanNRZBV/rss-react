@@ -6,10 +6,10 @@ declare type FormDataDisplay = {
   confirmPassword: string;
   gender: string;
   age: number;
-  tAndC: boolean;
+  termsAndConditions: boolean;
   images: string | string[] | null;
   country: string;
-  lastModified: string | null;
+  lastModified: string;
 };
 
 declare type UserInputData = Omit<FormDataDisplay, 'images'> & {

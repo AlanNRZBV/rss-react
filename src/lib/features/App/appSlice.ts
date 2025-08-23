@@ -14,10 +14,10 @@ const initialState: AppState = {
     confirmPassword: '',
     gender: '',
     age: 0,
-    tAndC: false,
+    termsAndConditions: false,
     country: '',
     images: null,
-    lastModified: null,
+    lastModified: '',
   },
   uncontrolled: {
     name: '',
@@ -26,10 +26,10 @@ const initialState: AppState = {
     confirmPassword: '',
     gender: '',
     age: 0,
-    tAndC: false,
+    termsAndConditions: false,
     country: '',
     images: null,
-    lastModified: null,
+    lastModified: '',
   },
 };
 

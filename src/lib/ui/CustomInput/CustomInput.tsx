@@ -1,4 +1,9 @@
-import type { ChangeEvent, FC, InputHTMLAttributes } from 'react';
+import {
+  type ChangeEvent,
+  type FC,
+  type InputHTMLAttributes,
+  memo,
+} from 'react';
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isError?: boolean;
@@ -55,10 +60,10 @@ const CustomInput: FC<CustomInputProps> = ({
         </div>
       )}
       <div className={`${isError ? 'visible' : 'invisible'}`}>
-        <span>{errorText}</span>
+        <span className="text-sm text-red-400">{errorText}</span>
       </div>
     </div>
   );
 };
 
-export default CustomInput;
+export default memo(CustomInput);
