@@ -12,6 +12,20 @@ declare type FormDataDisplay = {
   lastModified: string;
 };
 
-declare type UserInputData = Omit<FormDataDisplay, 'images'> & {
-  images: File | File[] | null;
-};
+declare type FieldControlType = 'input' | 'autocompleteSelect' | 'select';
+
+declare interface FieldConfig {
+  controlType: FieldControlType;
+  label: string;
+  name: string;
+  id: string;
+  options?: CustomSelectOption[];
+  type?: string;
+  props?: Record<string, unknown>;
+}
+
+declare interface ActionConfig {
+  type: 'submit';
+  text: string;
+  props?: Record<string, unknown>;
+}

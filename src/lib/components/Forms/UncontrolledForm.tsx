@@ -1,14 +1,13 @@
 import CustomInput from '@/lib/ui/CustomInput/CustomInput.tsx';
 import CustomAutocompleteSelect from '@/lib/ui/CustomAutocompleteSelect/CustomAutocompleteSelect.tsx';
-import { COUNTRIES } from '@/lib/static/countries.ts';
 import CustomSelect from '@/lib/ui/CustomSelect/CustomSelect.tsx';
-import { GENDERS } from '@/lib/static/genders.ts';
 import CustomButton from '@/lib/ui/CustomButton/CustomButton.tsx';
 import { type FC, type FormEvent, useRef, useState } from 'react';
 import { useAppDispatch } from '@/lib/providers/store.ts';
 import { updateUncontrolledState } from '@/lib/features/App/appSlice.ts';
 import { getNow } from '@/lib/utils/getNow.ts';
 import { formSchema } from '@/lib/validation/schema.ts';
+import { formConfig } from '@/lib/components/Forms/config.ts';
 
 interface UncontrolledFormProps {
   onSuccess: () => void;
@@ -68,96 +67,77 @@ const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSuccess }) => {
     }
   };
 
+  const renderField = (field: FieldConfig) => {
+    const commonProps = {
+      ...field.props,
+      isError: !!formErrors[field.name],
+      errorText: formErrors[field.name],
+    };
+
+    switch (field.controlType) {
+      case 'input':
+        return (
+          <CustomInput
+            key={field.id}
+            label={field.label}
+            type={field.type}
+            name={field.name}
+            id={field.id}
+            {...commonProps}
+          />
+        );
+      case 'autocompleteSelect':
+        return (
+          <CustomAutocompleteSelect
+            key={field.id}
+            label={field.label}
+            name={field.name}
+            id={field.id}
+            options={field.options ? field.options : []}
+            {...commonProps}
+          />
+        );
+      case 'select':
+        return (
+          <CustomSelect
+            key={field.id}
+            label={field.label}
+            name={field.name}
+            id={field.id}
+            options={field.options ? field.options : []}
+            {...commonProps}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderAction = (action: ActionConfig) => {
+    switch (action.type) {
+      case 'submit':
+        return (
+          <CustomButton
+            key={action.text}
+            text={action.text}
+            type="submit"
+            {...action.props}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="mb-4 flex h-full flex-col gap-4 border-b border-b-black pb-4">
       <h3 className="text-xl font-bold">Uncontrolled form</h3>
       <form onSubmit={handleSubmit} ref={formRef} className="flex flex-col">
         <div className="grid grid-cols-2 gap-2">
-          <CustomInput
-            label="name"
-            type="text"
-            name="name"
-            placeholder="Enter your name"
-            id="name"
-            isError={!!formErrors.name}
-            errorText={formErrors.name}
-          />
-          <CustomInput
-            label="email"
-            type="email"
-            name="email"
-            placeholder="Enter your email"
-            id="email"
-            isError={!!formErrors.email}
-            errorText={formErrors.email}
-          />
-          <CustomInput
-            type="number"
-            label="age"
-            name="age"
-            placeholder="Enter your age"
-            id="age"
-            isError={!!formErrors.age}
-            errorText={formErrors.age}
-          />
-          <CustomInput
-            type="password"
-            label="password"
-            name="password"
-            placeholder="Enter your password"
-            id="password"
-            isError={!!formErrors.password}
-            errorText={formErrors.password}
-          />
-          <CustomInput
-            type="password"
-            label="confirm password"
-            id="confirm-password"
-            name="confirmPassword"
-            placeholder="Enter your name"
-            isError={!!formErrors.confirmPassword}
-            errorText={formErrors.confirmPassword}
-          />
-          <CustomInput
-            type="checkbox"
-            label="terms and conditions"
-            id="tems-and-conditions"
-            name="termsAndConditions"
-            placeholder="Enter your name"
-            isError={!!formErrors.tAndC}
-            errorText={formErrors.tAndC}
-          />
-          <CustomInput
-            type="file"
-            label="images"
-            id="images"
-            name="images"
-            placeholder="Upload your images"
-            accept="image/png, image/jpeg, image/jpg"
-            isError={!!formErrors.images}
-            errorText={formErrors.images}
-          />
-          <CustomAutocompleteSelect
-            label="Select country"
-            name="country"
-            id="country"
-            options={COUNTRIES}
-            autoComplete="on"
-            placeholder="Select country"
-            isError={!!formErrors.country}
-            errorText={formErrors.country}
-          />
-          <CustomSelect
-            label="gender"
-            name="gender"
-            id="gender"
-            options={GENDERS}
-            isError={!!formErrors.gender}
-            errorText={formErrors.gender}
-          />
+          {formConfig.fields.map(renderField)}
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">
-          <CustomButton text="submit" type="submit" />
+          {formConfig.actions.map(renderAction)}
         </div>
       </form>
     </div>
