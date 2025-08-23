@@ -5,9 +5,9 @@ import CustomButton from '@/lib/ui/CustomButton/CustomButton.tsx';
 import { type FC, type FormEvent, useRef, useState } from 'react';
 import { useAppDispatch } from '@/lib/providers/store.ts';
 import { updateUncontrolledState } from '@/lib/features/App/appSlice.ts';
-import { getNow } from '@/lib/utils/getNow.ts';
 import { formSchema } from '@/lib/validation/schema.ts';
 import { formConfig } from '@/lib/components/Forms/config.ts';
+import { getTypedData } from '@/lib/utils/getTypedData.ts';
 
 interface UncontrolledFormProps {
   onSuccess: () => void;
@@ -36,32 +36,8 @@ const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSuccess }) => {
         return;
       }
 
-      const typedData: FormDataDisplay = {
-        name: (rawData.name as string) || '',
-        email: (rawData.email as string) || '',
-        password: (rawData.password as string) || '',
-        confirmPassword: (rawData.confirmPassword as string) || '',
-        gender: (rawData.gender as string) || '',
-        age: Number(rawData.age) || 0,
-        termsAndConditions: !!rawData.termsAndConditions,
-        country: (rawData.country as string) || '',
-        lastModified: getNow(),
-        images: null,
-      };
+      const typedData = await getTypedData(rawData, formData);
 
-      const file = formData.get('images') as File | null;
-      if (file) {
-        try {
-          typedData.images = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (event) => resolve(event.target?.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-          });
-        } catch (error) {
-          console.error('Convert error', error);
-        }
-      }
       dispatch(updateUncontrolledState(typedData));
       onSuccess();
     }
