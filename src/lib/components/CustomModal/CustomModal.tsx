@@ -7,6 +7,7 @@ interface CustomModalProps extends PropsWithChildren {
 const CustomModal: FC<CustomModalProps> = ({ onClose, children }) => {
   return (
     <dialog
+      onClick={onClose}
       id="dialog"
       aria-label="form-modal"
       aria-modal={true}
