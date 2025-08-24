@@ -37,12 +37,15 @@ export const formSchema = z
         (val) => validGenders.includes(val),
         'Please select a valid gender'
       ),
-    termsAndConditions: z.preprocess(
-      (val) => val === 'on',
-      z.boolean().refine((val) => val, {
-        message: 'You must accept Terms and Conditions',
+    termsAndConditions: z
+      .union([z.string(), z.boolean()])
+      .transform((val) => {
+        if (typeof val === 'boolean') return val;
+        return val === 'on';
       })
-    ),
+      .refine((val) => val === true, {
+        message: 'You must accept Terms and Conditions',
+      }),
     country: z
       .string()
       .min(1, 'Country is required')

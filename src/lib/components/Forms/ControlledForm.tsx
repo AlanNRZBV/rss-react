@@ -1,4 +1,4 @@
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import CustomInput from '@/lib/ui/CustomInput/CustomInput.tsx';
 import CustomButton from '@/lib/ui/CustomButton/CustomButton.tsx';
 import CustomAutocompleteSelect from '@/lib/ui/CustomAutocompleteSelect/CustomAutocompleteSelect.tsx';
@@ -7,17 +7,25 @@ import CustomSelect from '@/lib/ui/CustomSelect/CustomSelect.tsx';
 import { GENDERS } from '@/lib/static/genders.ts';
 import { formSchema } from '@/lib/validation/schema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { updateControlledState } from '@/lib/features/App/appSlice.ts';
+import type { FC } from 'react';
+import { useAppDispatch } from '@/lib/providers/store.ts';
+import { transformFileFormat } from '@/lib/utils/transformFileFormat.ts';
 
-type FormInputs = z.infer<typeof formSchema>;
+interface ControlledFormProps {
+  onSuccess: () => void;
+}
 
-const ControlledForm = () => {
+const ControlledForm: FC<ControlledFormProps> = ({ onSuccess }) => {
+  const dispatch = useAppDispatch();
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -31,9 +39,20 @@ const ControlledForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = (data: FormInputs) => {
-    console.log(data);
-    console.log(errors);
+  const onSubmit: SubmitHandler<FormInputs> = async (data: FormInputs) => {
+    console.log('data', data);
+    console.log('isavlid', isValid);
+    console.log('fs', errors);
+    try {
+      if (isValid && !isSubmitting) {
+        const transformedData = await transformFileFormat(data);
+
+        dispatch(updateControlledState(transformedData));
+        onSuccess();
+      }
+    } catch (e) {
+      console.error('Caught on try - Submit controlled form ', e);
+    }
   };
 
   return (
@@ -119,24 +138,6 @@ const ControlledForm = () => {
           />
           <Controller
             control={control}
-            name="termsAndConditions"
-            render={({ field }) => (
-              <CustomInput
-                label="terms and conditions"
-                type="checkbox"
-                id="terms-and-conditions"
-                placeholder="Confirm your password"
-                checked={!!field.value}
-                onChange={(e) => field.onChange(e.target.checked)}
-                onBlur={field.onBlur}
-                name={field.name}
-                isError={!!errors.termsAndConditions}
-                errorText={errors.termsAndConditions?.message}
-              />
-            )}
-          />
-          <Controller
-            control={control}
             name="images"
             render={({ field }) => (
               <CustomInput
@@ -145,7 +146,9 @@ const ControlledForm = () => {
                 id="images"
                 placeholder="Upload your images"
                 accept="image/png, image/jpeg, image/jpg"
-                onChange={field.onChange}
+                onChange={(e) =>
+                  field.onChange(e.target.files ? e.target.files[0] : [])
+                }
                 onBlur={field.onBlur}
                 isError={!!errors.images}
                 errorText={errors.images?.message}
@@ -185,9 +188,31 @@ const ControlledForm = () => {
               />
             )}
           />
+          <Controller
+            control={control}
+            name="termsAndConditions"
+            render={({ field }) => (
+              <CustomInput
+                label="terms and conditions"
+                type="checkbox"
+                id="terms-and-conditions"
+                placeholder="Confirm your password"
+                checked={!!field.value}
+                onChange={(e) => field.onChange(e.target.checked)}
+                onBlur={field.onBlur}
+                name={field.name}
+                isError={!!errors.termsAndConditions}
+                errorText={errors.termsAndConditions?.message}
+              />
+            )}
+          />
         </div>
         <div className="mt-4 flex items-center justify-center gap-2">
-          <CustomButton text="submit" type="submit" />
+          <CustomButton
+            text="submit"
+            type="submit"
+            disabled={!isValid || isSubmitting}
+          />
         </div>
       </form>
     </div>

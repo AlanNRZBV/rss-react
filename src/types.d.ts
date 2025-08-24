@@ -29,3 +29,4 @@ declare interface ActionConfig {
   text: string;
   props?: Record<string, unknown>;
 }
+declare type FormInputs = z.infer<typeof formSchema>;

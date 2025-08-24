@@ -37,7 +37,7 @@ const Controls = () => {
         createPortal(
           <CustomModal onClose={handleClose}>
             {modalType === 'controlled' ? (
-              <ControlledForm />
+              <ControlledForm onSuccess={handleClose} />
             ) : (
               <UncontrolledForm onSuccess={handleClose} />
             )}

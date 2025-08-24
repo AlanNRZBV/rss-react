@@ -14,7 +14,7 @@ export const getTypedData = async (
     termsAndConditions: !!arg.termsAndConditions,
     country: (arg.country as string) || '',
     lastModified: getNow(),
-    images: null,
+    images: undefined,
   };
 
   const file = fd.get('images') as File | null;
