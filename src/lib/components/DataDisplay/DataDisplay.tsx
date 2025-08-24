@@ -38,6 +38,13 @@ const DataDisplay: FC<DataDisplayProps> = ({ data }) => {
           </span>
         </li>
       ))}
+      {data.images && (
+        <img
+          className="h-[200px] object-contain"
+          alt="test"
+          src={data.images as string}
+        />
+      )}
     </ul>
   );
 };
