@@ -5,7 +5,7 @@ import { GENDERS } from '@/lib/static/genders.ts';
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const validCountries = COUNTRIES.map((item) => item.name);
-const validGenders = GENDERS.map((item) => item.value);
+const validGenders = [...GENDERS].slice(1).map((item) => item.value);
 
 export const formSchema = z
   .object({
@@ -32,7 +32,7 @@ export const formSchema = z
     confirmPassword: z.string(),
     gender: z
       .string()
-      .min(1, 'Gender is required')
+      .min(0, 'Gender is required')
       .refine(
         (val) => validGenders.includes(val),
         'Please select a valid gender'

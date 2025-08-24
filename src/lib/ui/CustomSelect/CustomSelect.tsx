@@ -1,4 +1,5 @@
 import { type FC, type SelectHTMLAttributes } from 'react';
+import CustomInputError from '@/lib/ui/CustomInputError/CustomInputError.tsx';
 
 interface CustomSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
@@ -38,9 +39,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
           ))}
         </select>
       </div>
-      <div className={`${isError ? 'visible' : 'invisible'}`}>
-        <span className="text-sm text-red-400">{errorText}</span>
-      </div>
+      <CustomInputError isError={isError} errorText={errorText} />
     </div>
   );
 };

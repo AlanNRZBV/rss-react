@@ -1,4 +1,5 @@
 import { type FC, type InputHTMLAttributes, memo } from 'react';
+import CustomInputError from '@/lib/ui/CustomInputError/CustomInputError.tsx';
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isError?: boolean;
@@ -50,9 +51,7 @@ const CustomInput: FC<CustomInputProps> = ({
           />
         </div>
       )}
-      <div className={`${isError ? 'visible' : 'invisible'}`}>
-        <span className="text-sm text-red-400">{errorText}</span>
-      </div>
+      <CustomInputError isError={isError} errorText={errorText} />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { type FC, type InputHTMLAttributes } from 'react';
+import CustomInputError from '@/lib/ui/CustomInputError/CustomInputError.tsx';
 interface CustomAutocompleteSelectProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -46,9 +47,7 @@ const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
           ))}
         </datalist>
       </div>
-      <div className={`${isError ? 'visible' : 'invisible'}`}>
-        <span className="text-sm text-red-400">{errorText}</span>
-      </div>
+      <CustomInputError isError={isError} errorText={errorText} />
     </div>
   );
 };

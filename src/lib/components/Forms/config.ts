@@ -54,14 +54,7 @@ export const formConfig: FormConfig = {
       type: 'password',
       props: { placeholder: 'Confirm your password' },
     },
-    {
-      controlType: 'input',
-      label: 'terms and conditions',
-      name: 'termsAndConditions',
-      id: 'terms-and-conditions',
-      type: 'checkbox',
-      props: {},
-    },
+
     {
       controlType: 'input',
       label: 'images',
@@ -90,6 +83,14 @@ export const formConfig: FormConfig = {
       name: 'gender',
       id: 'gender',
       options: GENDERS,
+      props: {},
+    },
+    {
+      controlType: 'input',
+      label: 'terms and conditions',
+      name: 'termsAndConditions',
+      id: 'terms-and-conditions',
+      type: 'checkbox',
       props: {},
     },
   ],
