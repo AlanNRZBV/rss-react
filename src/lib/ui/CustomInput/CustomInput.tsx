@@ -1,16 +1,9 @@
-import {
-  type ChangeEvent,
-  type FC,
-  type InputHTMLAttributes,
-  memo,
-} from 'react';
+import { type FC, type InputHTMLAttributes, memo } from 'react';
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isError?: boolean;
   errorText?: string;
   label: string;
-  value?: string | number;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -21,9 +14,8 @@ const CustomInput: FC<CustomInputProps> = ({
   isError,
   errorText,
   id,
-  readOnly,
-  value,
-  onChange,
+  checked,
+  ...props
 }) => {
   return (
     <div className="flex flex-col">
@@ -36,14 +28,13 @@ const CustomInput: FC<CustomInputProps> = ({
       {type === 'checkbox' ? (
         <div className="flex items-center gap-4 px-2 py-1">
           <input
-            onChange={onChange}
+            checked={checked}
             className="h-[18px] w-[18px] checked:ring-2 checked:ring-blue-500"
             placeholder={placeholder}
             id={id}
             name={name}
             type={type}
-            readOnly={readOnly}
-            value={value}
+            {...props}
           />
           <span className="font-medium">Accept</span>
         </div>
@@ -55,7 +46,7 @@ const CustomInput: FC<CustomInputProps> = ({
             id={id}
             name={name}
             type={type}
-            readOnly={readOnly}
+            {...props}
           />
         </div>
       )}

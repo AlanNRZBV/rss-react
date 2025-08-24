@@ -19,6 +19,7 @@ const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
   type,
   isError,
   errorText,
+  ...props
 }) => {
   return (
     <div className="flex flex-col">
@@ -30,13 +31,14 @@ const CustomAutocompleteSelect: FC<CustomAutocompleteSelectProps> = ({
       </label>
       <div className="transition-color flex rounded-md border border-black bg-gray-100 px-2 py-1 duration-150 focus-within:ring focus-within:ring-blue-500">
         <input
+          className="grow outline-0"
+          list="countries"
           autoComplete={autoComplete}
           placeholder={placeholder}
           id={id}
           name={name}
           type={type}
-          className="grow outline-0"
-          list="countries"
+          {...props}
         />
         <datalist id="countries">
           {options.map((item, index) => (

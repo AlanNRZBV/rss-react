@@ -14,6 +14,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   options,
   isError,
   errorText,
+  ...props
 }) => {
   return (
     <div className="flex flex-col">
@@ -24,7 +25,12 @@ const CustomSelect: FC<CustomSelectProps> = ({
         {label}
       </label>
       <div className="transition-color flex rounded-md border border-black bg-gray-100 px-2 py-1 duration-150 focus-within:ring focus-within:ring-blue-500">
-        <select name={name} id={id} className="min-h-[24px] grow outline-0">
+        <select
+          name={name}
+          id={id}
+          className="min-h-[24px] grow outline-0"
+          {...props}
+        >
           {options.map((item, index) => (
             <option key={index} value={item.value}>
               {item.name}

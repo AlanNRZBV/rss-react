@@ -27,7 +27,7 @@ const DataDisplay: FC<DataDisplayProps> = ({ data }) => {
     <ul className="grid grid-cols-2 rounded-lg border-2 bg-white p-2">
       {isNew && (
         <li className="col-span-2 mb-2 flex items-center justify-center gap-1 rounded bg-green-100 px-2 py-1 text-sm font-bold text-green-700">
-          <span aria-hidden="true">🆕</span> New Data!
+          New Data!
         </li>
       )}
       {fieldConfig.map(({ key, label, format }) => (

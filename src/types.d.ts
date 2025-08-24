@@ -6,8 +6,8 @@ declare type FormDataDisplay = {
   confirmPassword: string;
   gender: string;
   age: number;
-  termsAndConditions: boolean | null;
-  images: string | string[] | null;
+  termsAndConditions: boolean | undefined;
+  images: string | string[] | undefined;
   country: string;
   lastModified: string;
 };
