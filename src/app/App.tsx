@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, Suspense } from 'react';
 import Column from '../lib/components/Column/Column.tsx';
 import CountryList from '../lib/components/CountryList/CountryList.tsx';
 
@@ -7,7 +7,9 @@ class App extends Component {
     return (
       <div className="p-4 w-full grid grid-cols-12 gap-4">
         <Column className="col-span-4">
-          <CountryList />
+          <Suspense fallback={<div>Loading...</div>}>
+            <CountryList />
+          </Suspense>
         </Column>
         <Column className="col-span-8">data table</Column>
       </div>
