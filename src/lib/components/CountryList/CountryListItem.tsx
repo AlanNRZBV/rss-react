@@ -1,11 +1,17 @@
-import type { RowComponentProps } from 'react-window';
+import type { CellComponentProps } from 'react-window';
+import { indexToColumn } from '@/lib/util/indexToColumn.ts';
 
 const CountryListItem = ({
-  index,
-  names,
+  columnIndex,
+  rowIndex,
   style,
-}: RowComponentProps<{ names: string[] }>) => {
-  return <li style={style}>{names[index]}</li>;
+  countries,
+}: CellComponentProps<{ countries: CountryListItemType[] }>) => {
+  const country = countries[rowIndex];
+  const field = indexToColumn(columnIndex);
+  const content = country[field as keyof typeof country];
+
+  return <div style={style}>{content ?? 'N/A'}</div>;
 };
 
 export default CountryListItem;

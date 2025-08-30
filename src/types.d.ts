@@ -14,3 +14,9 @@ declare type CountryList = {
     data: CountryData[];
   };
 };
+
+declare type CountryListItemType = {
+  name: string;
+  isoCode: string;
+  population: number | undefined | 'N/A';
+};
