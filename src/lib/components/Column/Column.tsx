@@ -9,7 +9,7 @@ const Column: FC<ColumnProps> = ({ children, className, ...props }) => {
   return (
     <div
       className={twMerge(
-        'rounded-xl border border-black bg-gray-100 p-4',
+        'rounded-xl border border-black bg-gray-100 p-4 flex flex-col',
         className
       )}
       {...props}

@@ -1,6 +1,7 @@
 import CountryListItem from './CountryListItem.tsx';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetchCountryList } from '@/lib/util/getCountries.ts';
+import { List } from 'react-window';
 
 const CountryList = () => {
   const { data } = useSuspenseQuery({
@@ -8,14 +9,19 @@ const CountryList = () => {
     queryFn: fetchCountryList,
   });
 
-  console.log(data);
+  const countryNames: string[] = Object.keys(data);
 
   return (
-    <div>
+    <div className="flex flex-col grow">
       <h3>Country list</h3>
-      <ul>
-        <CountryListItem />
-      </ul>
+      <div className="grow h-[500px]">
+        <List
+          rowComponent={CountryListItem}
+          rowCount={countryNames.length}
+          rowHeight={25}
+          rowProps={{ names: countryNames }}
+        />
+      </div>
     </div>
   );
 };
