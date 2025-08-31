@@ -1,14 +1,16 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { getCountryDataByName } from '@/lib/util/getCountryDataByName.ts';
 import { useAppSelector } from '@/lib/providers/store.ts';
-import { selectCurrentCountry } from '@/lib/features/appSlice.ts';
+import {
+  selectColumns,
+  selectCurrentCountry,
+} from '@/lib/features/appSlice.ts';
 import { Grid } from 'react-window';
 import DataTableItem from '@/lib/components/DataTable/DataTableItem.tsx';
-import { indexToColumnDataGrid } from '@/lib/util/indexToColumnDataGrid.ts';
 
 const DataTable = () => {
   const currentCountry = useAppSelector(selectCurrentCountry);
-
+  const selectedColumns = useAppSelector(selectColumns);
   const queryClient = useQueryClient();
   const countriesData = queryClient.getQueryData<CountryList>(['countries']);
 
@@ -23,27 +25,27 @@ const DataTable = () => {
   if (!countryData) return <div>data extraction error</div>;
 
   function columnWidth(index: number) {
-    switch (indexToColumnDataGrid(index)) {
+    switch (selectedColumns[index]) {
       case 'year': {
-        return 100;
+        return 75;
       }
       case 'co2': {
-        return 150;
+        return 125;
       }
       case 'population': {
-        return 150;
+        return 125;
       }
       case 'co2_per_capita': {
-        return 150;
+        return 125;
       }
       case 'methane': {
-        return 150;
+        return 125;
       }
       case 'oil_co2': {
-        return 150;
+        return 125;
       }
-      case 'temperature_change_from_co2': {
-        return 150;
+      case 'gdp': {
+        return 125;
       }
       default: {
         return 100;
@@ -56,8 +58,11 @@ const DataTable = () => {
       <div className="grow h-[700px]">
         <Grid
           cellComponent={DataTableItem}
-          cellProps={{ dataList: countryData }}
-          columnCount={3}
+          cellProps={{
+            dataList: countryData,
+            selectedColumns: selectedColumns,
+          }}
+          columnCount={selectedColumns.length}
           columnWidth={columnWidth}
           rowCount={countryData.length}
           rowHeight={25}

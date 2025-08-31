@@ -5,7 +5,7 @@ declare interface CountryData {
   co2_per_capita?: number;
   methane?: number;
   oil_co2?: number;
-  temperature_change_from_co2?: number;
+  gdp?: number;
 }
 
 declare type CountryList = {
