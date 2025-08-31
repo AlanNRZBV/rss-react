@@ -1,5 +1,6 @@
 import type { CellComponentProps } from 'react-window';
 import { indexToColumnCountryGrid } from '@/lib/util/indexToColumnCountryGrid.ts';
+import { useCallback } from 'react';
 
 const CountryListItem = ({
   columnIndex,
@@ -15,11 +16,13 @@ const CountryListItem = ({
   const field = indexToColumnCountryGrid(columnIndex);
   const content = country[field as keyof typeof country];
 
+  const clickHandle = useCallback(() => {
+    onClick(country.name);
+  }, [country.name, onClick]);
+
   return (
     <div
-      onClick={() => {
-        onClick(country.name);
-      }}
+      onClick={clickHandle}
       className="hover:text-blue-500 cursor-pointer"
       style={style}
     >

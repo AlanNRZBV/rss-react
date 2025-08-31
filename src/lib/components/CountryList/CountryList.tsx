@@ -7,6 +7,7 @@ import { getCountryListItems } from '@/lib/util/getCountryListItems.ts';
 import { indexToColumnCountryGrid } from '@/lib/util/indexToColumnCountryGrid.ts';
 import { useAppDispatch } from '@/lib/providers/store.ts';
 import { changeCountry } from '@/lib/features/appSlice.ts';
+import CustomButton from '@/lib/ui/CustomButton/CustomButton.tsx';
 
 const CountryList = () => {
   const dispatch = useAppDispatch();
@@ -38,15 +39,20 @@ const CountryList = () => {
       }
     }
   }
+
   return (
     <div className="flex flex-col grow">
+      <form>
+        <input type="text" placeholder="enter country name" className="mb-2" />
+        <CustomButton type="submit" text="scroll to" />
+      </form>
       <div className="flex flex-row justify-between items-center mb-2">
         <div className="flex-1">name</div>
         <div className="flex-1">iso</div>
         <div className="mr-16">population</div>
         <div className="h-full" style={{ width: size }}></div>
       </div>
-      <div className="grow h-[700px]">
+      <div className="grow h-[600px]">
         <Grid
           cellComponent={CountryListItem}
           cellProps={{ countries, onClick: clickHandler }}

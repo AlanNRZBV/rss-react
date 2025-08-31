@@ -14,8 +14,6 @@ const DataTable = () => {
   const queryClient = useQueryClient();
   const countriesData = queryClient.getQueryData<CountryList>(['countries']);
 
-  console.log(countriesData);
-
   if (!currentCountry) return <div>select country to load data</div>;
   if (!countriesData)
     return <div>have nothing to display. try to reload page</div>;
@@ -55,7 +53,8 @@ const DataTable = () => {
 
   return (
     <div className="flex flex-col grow">
-      <div className="grow h-[700px]">
+      <span className="text-xl font-bold mb-2">Data for: {currentCountry}</span>
+      <div className="grow h-[600px]">
         <Grid
           cellComponent={DataTableItem}
           cellProps={{

@@ -21,11 +21,13 @@ const App = () => {
     <div className="p-4 w-full grid grid-cols-12 gap-4 h-screen">
       <Column className="col-span-5">
         <Suspense fallback={<div>Loading...</div>}>
+          <span>click on any field to load data for specific country</span>
           <CountryList />
         </Suspense>
       </Column>
       <Column className="col-span-7">
-        <div>
+        <div className="flex items-center gap-2">
+          <span>click to select columns</span>
           <CustomButton onClick={handleClick} text="columns" />
         </div>
         <DataTable />
@@ -34,7 +36,7 @@ const App = () => {
         modalRoot &&
         createPortal(
           <CustomModal onClose={handleClose}>
-            <Controls />
+            <Controls onClose={handleClose} />
           </CustomModal>,
           modalRoot
         )}
