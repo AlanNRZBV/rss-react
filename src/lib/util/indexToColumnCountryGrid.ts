@@ -1,4 +1,4 @@
-export const indexToColumn = (index: number) => {
+export const indexToColumnCountryGrid = (index: number) => {
   switch (index % 3) {
     case 0:
       return 'name';

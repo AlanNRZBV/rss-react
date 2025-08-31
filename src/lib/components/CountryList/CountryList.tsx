@@ -4,9 +4,12 @@ import { fetchCountryList } from '@/lib/util/fetchCountries.ts';
 import { getScrollbarSize, Grid } from 'react-window';
 import { useState } from 'react';
 import { getCountryListItems } from '@/lib/util/getCountryListItems.ts';
-import { indexToColumn } from '@/lib/util/indexToColumn.ts';
+import { indexToColumnCountryGrid } from '@/lib/util/indexToColumnCountryGrid.ts';
+import { useAppDispatch } from '@/lib/providers/store.ts';
+import { changeCountry } from '@/lib/features/appSlice.ts';
 
 const CountryList = () => {
+  const dispatch = useAppDispatch();
   const [size] = useState(getScrollbarSize);
   const { data } = useSuspenseQuery({
     queryKey: ['countries'],
@@ -15,8 +18,12 @@ const CountryList = () => {
 
   const countries = getCountryListItems(data);
 
+  const clickHandler = (arg: string) => {
+    dispatch(changeCountry(arg));
+  };
+
   function columnWidth(index: number) {
-    switch (indexToColumn(index)) {
+    switch (indexToColumnCountryGrid(index)) {
       case 'name': {
         return 250;
       }
@@ -42,7 +49,7 @@ const CountryList = () => {
       <div className="grow h-[700px]">
         <Grid
           cellComponent={CountryListItem}
-          cellProps={{ countries }}
+          cellProps={{ countries, onClick: clickHandler }}
           columnCount={3}
           columnWidth={columnWidth}
           rowCount={countries.length}
